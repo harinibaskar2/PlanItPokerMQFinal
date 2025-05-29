@@ -1,4 +1,4 @@
-🃏 PlanITPoker 
+# 🃏 PlanITPoker 
 
 🚀 Overview
 PlanITPoker allows team members to:
