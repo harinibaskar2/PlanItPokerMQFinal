@@ -1,8 +1,12 @@
 package hbaskar.four;
 
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
 
 /**
  * Panel that displays the cards used for estimating.

@@ -1,7 +1,15 @@
 package hbaskar.three;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 
 /**
  * Allows the user to create a new story.
@@ -38,6 +46,8 @@ public class StoriesPanel extends JPanel {
 		saveCloseButton.addActionListener(e -> storiesNanny.saveAndClose(storyTextArea.getText()));
 		importButton.addActionListener(e -> storiesNanny.importStories());
 		cancelButton.addActionListener(e -> storiesNanny.cancel());
+	
+
 	}
 	
 }

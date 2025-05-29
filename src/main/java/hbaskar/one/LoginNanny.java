@@ -1,6 +1,6 @@
 package hbaskar.one;
-import hbaskar.two.*;
-import hbaskar.one.*;
+import hbaskar.two.CreateRoomNanny;
+import hbaskar.two.CreateRoomPanel;
 
 
 /**

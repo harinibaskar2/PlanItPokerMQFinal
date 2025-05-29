@@ -1,6 +1,8 @@
 package hbaskar.two;
-import hbaskar.one.*;
-import hbaskar.three.*;
+import hbaskar.one.Blackboard;
+import hbaskar.one.Main;
+import hbaskar.three.StoriesNanny;
+import hbaskar.three.StoriesPanel;
 
 
 /**
@@ -16,12 +18,15 @@ public class CreateRoomNanny {
 		this.main = main;
 	}
 	
-	public void createRoom(String name, String selectedItem) {
-		System.out.println(" Creating room..." + name + ", mode: " + selectedItem);
-		Blackboard.addCurrentRoom(name);
-		Blackboard.addCurrentMode(selectedItem);
-		switchGUI();
-	}
+    public void createRoom(String name, String selectedItem) {
+        System.out.println("Creating room..." + name + ", mode: " + selectedItem);
+        Blackboard.addRoom(name);          // Add room to the list of rooms
+        Blackboard.addCurrentRoom(name);   // Set as current room
+        Blackboard.addCurrentMode(selectedItem);
+        switchGUI();
+    }
+
+
 
 	private void switchGUI() {
     main.setTitle("Schedule Room");
