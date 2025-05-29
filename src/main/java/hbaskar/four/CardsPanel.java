@@ -3,7 +3,6 @@ package hbaskar.four;
 
 import java.awt.*;
 import javax.swing.*;
-import four.DashboardNanny;
 
 /**
  * Panel that displays the cards used for estimating.

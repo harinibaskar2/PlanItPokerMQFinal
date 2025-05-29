@@ -4,12 +4,9 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 
-import four.DashboardNanny;
-import four.DashboardPanel;
-import one.Blackboard;
-import one.Main;
-import two.ScheduleRoomPanel;
-import two.CreateRoomNanny;
+import hbaskar.one.*;
+import hbaskar.four.*;
+import hbaskar.two.*;
 
 /**
  * Controller responsible for managing the stories and their interactions with the user interface.
@@ -53,7 +50,7 @@ public class StoriesNanny {
 	
 	private void switchGUI() {
 		main.setTitle("dashboard");
-		four.DashboardNanny dashboardNanny = new DashboardNanny(main);
+		DashboardNanny dashboardNanny = new DashboardNanny(main);
 		DashboardPanel dashboardPanel = new DashboardPanel(dashboardNanny);
 		main.setContentPane(dashboardPanel);
 		main.setSize(800, 600);
@@ -64,8 +61,8 @@ public class StoriesNanny {
 	
 	private void switchSchedule() {
 		main.setTitle("Schedule Room");
-		two.CreateRoomNanny roomNanny = new two.CreateRoomNanny(main);
-		two.ScheduleRoomPanel scheduleRoomPanel = new two.ScheduleRoomPanel(roomNanny);
+		CreateRoomNanny roomNanny = new CreateRoomNanny(main);
+		ScheduleRoomPanel scheduleRoomPanel = new ScheduleRoomPanel(roomNanny);
 		main.setContentPane(scheduleRoomPanel);
 		main.setSize(500, 500);
 		main.revalidate();

@@ -1,6 +1,5 @@
 package hbaskar.four;
-import one.Main;
-
+import hbaskar.one.*;
 public class DashboardNanny {
 
     private SouthPanel southPanel;

@@ -1,5 +1,6 @@
 package hbaskar.two;
-
+import hbaskar.one.*;
+import hbaskar.three.*;
 
 
 /**
@@ -17,14 +18,14 @@ public class CreateRoomNanny {
 	
 	public void createRoom(String name, String selectedItem) {
 		System.out.println(" Creating room..." + name + ", mode: " + selectedItem);
-		one.Blackboard.addCurrentRoom(name);
-		one.Blackboard.addCurrentMode(selectedItem);
+		Blackboard.addCurrentRoom(name);
+		Blackboard.addCurrentMode(selectedItem);
 		switchGUI();
 	}
 
 	private void switchGUI() {
     main.setTitle("Schedule Room");
-    two.ScheduleRoomPanel scheduleRoomPanel = new two.ScheduleRoomPanel(this);
+    ScheduleRoomPanel scheduleRoomPanel = new ScheduleRoomPanel(this);
     main.setContentPane(scheduleRoomPanel);
     main.setSize(500, 500);
     main.revalidate();

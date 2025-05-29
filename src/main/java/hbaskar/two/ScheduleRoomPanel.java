@@ -2,6 +2,7 @@ package hbaskar.two;
 
 import java.awt.*;
 import javax.swing.*;
+import hbaskar.one.*;
 
 
 public class ScheduleRoomPanel extends JPanel {
@@ -33,7 +34,7 @@ public class ScheduleRoomPanel extends JPanel {
         confirmButton.addActionListener(e -> {
             String time = (String) timeCombo.getSelectedItem();
             System.out.println("Scheduled time: " + time);
-            one.Blackboard.setRoomTime(time);
+            Blackboard.setRoomTime(time);
             createRoomNanny.switchToStoriesPanel(); // navigate next
         });
 
