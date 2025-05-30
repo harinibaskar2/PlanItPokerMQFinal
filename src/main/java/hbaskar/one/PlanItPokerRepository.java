@@ -42,15 +42,12 @@ public class PlanItPokerRepository {
     }
     // Room Management
     public String createRoom(String roomName, String creatorName) {
-        String roomCode = "room " + roomCounter.getAndIncrement();
-        Room room = new Room(roomCode, roomName, creatorName);
-        rooms.put(roomCode, room);
-        
-        // Set current room code when a new room is created
-        setCurrentRoomCode(roomCode);
-        
-        return roomCode;
+        Room room = new Room(roomName, roomName, creatorName); // use roomName as both code and name
+        rooms.put(roomName, room); // store by roomName, not "room 1"
+        setCurrentRoomCode(roomName);
+        return roomName;
     }
+
 
     public Room getRoom(String roomCode) {
         return rooms.get(roomCode);
