@@ -9,24 +9,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import hbaskar.one.Blackboard;
+import hbaskar.one.PlanItPokerRepository;
+import hbaskar.one.PlanItPokerRepository.Room;
 
 public class ScheduleRoomPanel extends JPanel {
     private CreateRoomNanny createRoomNanny;
 
     public ScheduleRoomPanel(CreateRoomNanny createRoomNanny) {
         this.createRoomNanny = createRoomNanny;
-        setLayout(new GridLayout(5, 1)); // increased rows to 5
+        setLayout(new GridLayout(5, 1));
 
-
-
-        // 2. Title
+        // Title
         JLabel title = new JLabel("Schedule Room");
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setFont(new Font("SansSerif", Font.BOLD, 16));
         add(title);
 
-        // 3. Time selection
+        // Time selection
         JLabel timeLabel = new JLabel("Select Time Slot:");
         String[] timeSlots = {
             "9:00 AM - 10:00 AM", 
@@ -41,12 +40,22 @@ public class ScheduleRoomPanel extends JPanel {
         timePanel.add(timeCombo);
         add(timePanel);
 
-        // 4. Confirm button
+        // Confirm button
         JButton confirmButton = new JButton("Confirm Booking");
         confirmButton.addActionListener(e -> {
             String time = (String) timeCombo.getSelectedItem();
-            System.out.println("Scheduled time: " + time);
-            Blackboard.setRoomTime(time);
+
+            // Use repository instead of Blackboard
+            PlanItPokerRepository repo = PlanItPokerRepository.getInstance();
+            String currentRoomCode = repo.getCurrentRoomCode();
+            Room room = repo.getRoom(currentRoomCode);
+            if (room != null) {
+                room.setScheduledTime(time);
+                System.out.println("Scheduled time for room " + currentRoomCode + ": " + time);
+            } else {
+                System.err.println("No room found to schedule time.");
+            }
+
             createRoomNanny.switchToStoriesPanel();
         });
         add(confirmButton);

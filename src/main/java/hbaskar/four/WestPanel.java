@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import hbaskar.one.Blackboard;
+import hbaskar.one.PlanItPokerRepository;
 
 /**
  * Panel that contains the left side of the dashboard.
@@ -21,18 +21,19 @@ public class WestPanel extends JPanel {
 
     private JComboBox<String> roomSelector;
     private JPanel playersPanel;
+    private PlanItPokerRepository repository = PlanItPokerRepository.getInstance();
 
     public WestPanel(DashboardNanny dashboardNanny, String username) {
         setBackground(new Color(255, 204, 204));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        // ✅ Use dynamic username
+        // ✅ Display dynamic username
         JLabel usernameLabel = new JLabel(username);
         usernameLabel.setFont(new Font("Arial", Font.BOLD, 14));
         add(usernameLabel);
 
-        // Load rooms dynamically from Blackboard
-        List<String> rooms = Blackboard.getRooms();
+        // ✅ Load available rooms
+        List<String> rooms = repository.getAvailableRoomCodes();
         roomSelector = new JComboBox<>(rooms.toArray(new String[0]));
         add(roomSelector);
 
@@ -52,18 +53,25 @@ public class WestPanel extends JPanel {
 
         roomSelector.addActionListener(e -> {
             String selectedRoom = (String) roomSelector.getSelectedItem();
+            repository.setCurrentRoomCode(selectedRoom);
             dashboardNanny.onRoomSelected(selectedRoom);
+            refreshPlayerList(); // Refresh players when room changes
         });
     }
-
     private void refreshPlayerList() {
         playersPanel.removeAll();
-        List<String> names = Blackboard.getNames();
-        for (String name : names) {
-            JLabel nameLabel = new JLabel(name + " just entered the room");
-            nameLabel.setFont(new Font("Arial", Font.PLAIN, 12));
-            playersPanel.add(nameLabel);
+
+        String currentRoom = repository.getCurrentRoomCode();
+        if (currentRoom != null) {
+            List<String> names = repository.getRoom(currentRoom).getPlayers();
+            System.out.println("Players in room " + currentRoom + ": " + names);  // DEBUG
+            for (String name : names) {
+                JLabel nameLabel = new JLabel(name + " just entered the room");
+                nameLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+                playersPanel.add(nameLabel);
+            }
         }
+
         playersPanel.revalidate();
         playersPanel.repaint();
     }

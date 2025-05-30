@@ -13,20 +13,21 @@ import hbaskar.three.StoriesPanel;
 public class Main extends JFrame {
 	
 	public Main() {
-		LoginNanny loginNanny = new LoginNanny(this);
-		LoginPanel loginPanel = new LoginPanel(loginNanny);
-		add(loginPanel);
-		StoriesNanny storiesNanny = new StoriesNanny(this);
-		StoriesPanel storiesPanel = new StoriesPanel(storiesNanny);
-	}
-	
-	public static void main(String[] args) {
-		Main main = new Main();
-		main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		main.setSize(400, 400);
-		main.setLocationRelativeTo(null);
-		main.setVisible(true);
-	}
-	
+    System.out.println("Main constructor called");
+    LoginNanny loginNanny = new LoginNanny(this);
+    LoginPanel loginPanel = new LoginPanel(loginNanny);
+    add(loginPanel);
+    StoriesNanny storiesNanny = new StoriesNanny(this);
+    StoriesPanel storiesPanel = new StoriesPanel(storiesNanny);
 }
+
+public static void main(String[] args) {
+    System.out.println("Starting Main...");
+    Main main = new Main();
+    main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    main.setSize(400, 400);
+    main.setLocationRelativeTo(null);
+    main.setVisible(true);
+}
+} 
 
