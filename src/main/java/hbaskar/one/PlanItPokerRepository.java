@@ -119,6 +119,7 @@ public class PlanItPokerRepository {
     public void setCurrentMode(String currentMode) {
         this.currentMode = currentMode;
     }
+   
 
     // Inner Classes
     public static class Room {
