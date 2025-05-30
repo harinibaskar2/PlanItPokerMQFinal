@@ -24,8 +24,7 @@ public class LoginNanny {
         // Store user in repository for global access
         repository.setLoggedInUser(name);
 
-        // Store user in Blackboard (if needed)
-        Blackboard.addName(name);
+   
 
         // Optional: create default room if none exists
         if (repository.getCurrentRoomCode() == null) {
