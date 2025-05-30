@@ -1,7 +1,8 @@
 package hbaskar.one;
 
 import hbaskar.two.CreateRoomNanny;
-import hbaskar.two.CreateRoomPanel;
+import hbaskar.two.JoinRoomNanny;
+import hbaskar.two.RoomPanel;
 
 public class LoginNanny {
 
@@ -42,13 +43,20 @@ public class LoginNanny {
     private void switchGUI() {
         main.setTitle("Room");
 
-        // Pass Main only, since CreateRoomNanny can get the logged in user from repo
+        // Create both nannies
+        JoinRoomNanny joinRoomNanny = new JoinRoomNanny(main);
         CreateRoomNanny createRoomNanny = new CreateRoomNanny(main);
 
-        CreateRoomPanel createRoomPanel = new CreateRoomPanel(createRoomNanny);
-        main.setContentPane(createRoomPanel);
-        main.setSize(500, 500);
+        // Get logged in user name (if needed)
+        String username = PlanItPokerRepository.getInstance().getLoggedInUser();
+
+        // Create the combined panel with both create & join UI
+        RoomPanel roomPanel = new RoomPanel(username, createRoomNanny, joinRoomNanny);
+
+        // Set combined panel as content pane
+        main.setContentPane(roomPanel);
+        main.setSize(500, 600);  // increased height for both sections
         main.revalidate();
         main.repaint();
     }
-}
+} 
