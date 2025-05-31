@@ -17,15 +17,23 @@ import hbaskar.one.PlanItPokerRepository;
 public class WestPanel extends JPanel {
 
     private JComboBox<String> roomSelector;
+    private JComboBox<String> inviteRoomSelector; // Changed from JTextField to JComboBox
     private JPanel playersPanel;
     private PlanItPokerRepository repository = PlanItPokerRepository.getInstance();
 
-    // Invite teammate UI components
-    private JTextField teammateNameField;
-    private JTextField roomCodeField;
+    private JTextField inviteNameField;
     private JButton inviteButton;
 
+    private JTextField newRoomCodeField;
+    private JButton createRoomButton;
+
+    private DashboardNanny dashboardNanny;
+    private String username;
+
     public WestPanel(DashboardNanny dashboardNanny, String username) {
+        this.dashboardNanny = dashboardNanny;
+        this.username = username;
+
         setBackground(new Color(255, 204, 204));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -33,6 +41,7 @@ public class WestPanel extends JPanel {
         usernameLabel.setFont(new Font("Arial", Font.BOLD, 14));
         add(usernameLabel);
 
+        // Room selector combo box
         List<String> rooms = repository.getAvailableRoomCodes();
         roomSelector = new JComboBox<>(rooms.toArray(new String[0]));
         add(roomSelector);
@@ -48,58 +57,86 @@ public class WestPanel extends JPanel {
 
         add(new JLabel("00:00:00"));
 
+        // Create new room UI
+        add(new JLabel("Create a new room:"));
+        newRoomCodeField = new JTextField();
+        add(newRoomCodeField);
+        createRoomButton = new JButton("Create Room");
+        add(createRoomButton);
+
         // Invite teammate UI
         add(new JLabel("Invite a teammate:"));
+        inviteNameField = new JTextField();
+        inviteNameField.setToolTipText("Enter teammate name");
+        add(inviteNameField);
 
-        teammateNameField = new JTextField();
-        teammateNameField.setMaximumSize(new java.awt.Dimension(Integer.MAX_VALUE, 30));
-        teammateNameField.setToolTipText("Enter teammate name");
-        add(teammateNameField);
-
-        add(new JLabel("Room code for teammate to join:"));
-
-        roomCodeField = new JTextField();
-        roomCodeField.setMaximumSize(new java.awt.Dimension(Integer.MAX_VALUE, 30));
-        roomCodeField.setToolTipText("Enter room code");
-        add(roomCodeField);
+        // Invite room selector dropdown instead of text input
+        inviteRoomSelector = new JComboBox<>(rooms.toArray(new String[0]));
+        inviteRoomSelector.setToolTipText("Select room code to join");
+        add(inviteRoomSelector);
 
         inviteButton = new JButton("Invite");
         add(inviteButton);
 
-        inviteButton.addActionListener(e -> {
-            String teammateName = teammateNameField.getText().trim();
-            String roomCode = roomCodeField.getText().trim();
-
-            if (teammateName.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please enter a teammate name.");
-                return;
-            }
-            if (roomCode.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please enter a room code.");
-                return;
-            }
-
-            boolean added = repository.joinRoom(roomCode, teammateName);
-            if (added) {
-                JOptionPane.showMessageDialog(this, teammateName + " invited successfully to room " + roomCode + "!");
-                teammateNameField.setText("");
-                roomCodeField.setText("");
-                refreshPlayerList();
-            } else {
-                JOptionPane.showMessageDialog(this, "Failed to invite " + teammateName + ". They may already be in the room or the room code is invalid.");
-            }
-        });
-
         add(new JTextField("https://app.planitpoker.com"));
         add(new JButton("Copy URL"));
 
-        // Room selector listener
+        // Listeners
+
         roomSelector.addActionListener(e -> {
             String selectedRoom = (String) roomSelector.getSelectedItem();
             repository.setCurrentRoomCode(selectedRoom);
             dashboardNanny.onRoomSelected(selectedRoom);
-            refreshPlayerList(); // Refresh players when room changes
+            refreshPlayerList();
         });
+
+        createRoomButton.addActionListener(e -> {
+            String newRoomName = newRoomCodeField.getText().trim();
+            if (newRoomName.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter a room name.");
+                return;
+            }
+            // Call createRoom, which returns String room code or null
+            String createdRoomCode = repository.createRoom(newRoomName, username);
+            if (createdRoomCode != null && !createdRoomCode.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Room '" + createdRoomCode + "' created successfully!");
+                updateRoomSelector(createdRoomCode);
+                newRoomCodeField.setText("");
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to create room '" + newRoomName + "'.");
+            }
+        });
+
+        inviteButton.addActionListener(e -> {
+            String teammateName = inviteNameField.getText().trim();
+            String roomCodeToJoin = (String) inviteRoomSelector.getSelectedItem();
+
+            if (teammateName.isEmpty() || roomCodeToJoin == null || roomCodeToJoin.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter a teammate name and select a room.");
+                return;
+            }
+
+            boolean added = repository.joinRoom(roomCodeToJoin, teammateName);
+            if (added) {
+                JOptionPane.showMessageDialog(this, teammateName + " invited successfully to room " + roomCodeToJoin + "!");
+                inviteNameField.setText("");
+                // No need to reset room selector dropdown for inviteRoomSelector
+                if (roomCodeToJoin.equals(repository.getCurrentRoomCode())) {
+                    refreshPlayerList();
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to invite " + teammateName + ". They may already be in the room or room does not exist.");
+            }
+        });
+    }
+
+    private void updateRoomSelector(String newRoom) {
+        roomSelector.addItem(newRoom);
+        inviteRoomSelector.addItem(newRoom);
+        roomSelector.setSelectedItem(newRoom);
+        repository.setCurrentRoomCode(newRoom);
+        dashboardNanny.onRoomSelected(newRoom);
+        refreshPlayerList();
     }
 
     private void refreshPlayerList() {
