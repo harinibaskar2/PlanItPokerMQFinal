@@ -30,6 +30,10 @@ public class WestPanel extends JPanel {
     private DashboardNanny dashboardNanny;
     private String username;
 
+    // Only storyTitleField now
+    private JTextField storyTitleField;
+    private JButton createStoryButton;
+
     public WestPanel(DashboardNanny dashboardNanny, String username) {
         this.dashboardNanny = dashboardNanny;
         this.username = username;
@@ -81,6 +85,17 @@ public class WestPanel extends JPanel {
         add(new JTextField("https://app.planitpoker.com"));
         add(new JButton("Copy URL"));
 
+        // --- Story creation UI ---
+        add(new JLabel(" ")); // spacer
+        add(new JLabel("Create a new story:"));
+
+        storyTitleField = new JTextField();
+        storyTitleField.setToolTipText("Enter story title");
+        add(storyTitleField);
+
+        createStoryButton = new JButton("Create Story");
+        add(createStoryButton);
+
         // Listeners
 
         roomSelector.addActionListener(e -> {
@@ -96,7 +111,6 @@ public class WestPanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Please enter a room name.");
                 return;
             }
-            // Call createRoom, which returns String room code or null
             String createdRoomCode = repository.createRoom(newRoomName, username);
             if (createdRoomCode != null && !createdRoomCode.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Room '" + createdRoomCode + "' created successfully!");
@@ -120,12 +134,34 @@ public class WestPanel extends JPanel {
             if (added) {
                 JOptionPane.showMessageDialog(this, teammateName + " invited successfully to room " + roomCodeToJoin + "!");
                 inviteNameField.setText("");
-                // No need to reset room selector dropdown for inviteRoomSelector
                 if (roomCodeToJoin.equals(repository.getCurrentRoomCode())) {
                     refreshPlayerList();
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Failed to invite " + teammateName + ". They may already be in the room or room does not exist.");
+            }
+        });
+
+        createStoryButton.addActionListener(e -> {
+            String title = storyTitleField.getText().trim();
+            String currentRoom = repository.getCurrentRoomCode();
+
+            if (currentRoom == null || currentRoom.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please select or create a room first.");
+                return;
+            }
+            if (title.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter a story title.");
+                return;
+            }
+
+            // Assuming createStory now only takes room and title (without description)
+            String storyId = repository.createStory(currentRoom, title, null); // pass null for description
+            if (storyId != null) {
+                JOptionPane.showMessageDialog(this, "Story created successfully! ID: " + storyId);
+                storyTitleField.setText("");
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to create story.");
             }
         });
     }
