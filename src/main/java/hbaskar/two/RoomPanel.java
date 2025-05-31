@@ -70,17 +70,29 @@ public class RoomPanel extends JPanel {
         // Create room action
         createButton.addActionListener(e -> {
             String roomName = createNameField.getText().trim();
-            String mode = (String) modeComboBox.getSelectedItem();
 
             if (roomName.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please enter a room name to create.");
                 return;
             }
 
+            // Check for duplicate room name
+            List<String> existingRooms = repository.getAvailableRoomCodes();
+            if (existingRooms.contains(roomName)) {
+                JOptionPane.showMessageDialog(this, "Room name '" + roomName + "' already exists. Please choose a different name.");
+                return;
+            }
+
+            String mode = (String) modeComboBox.getSelectedItem();
+
             createRoomNanny.createRoom(roomName, mode);
+            JOptionPane.showMessageDialog(this, "Room '" + roomName + "' created successfully.");
 
             // Update dropdown after create
             refreshRoomDropdown(roomDropdown);
+
+            // Clear the input field
+            createNameField.setText("");
         });
 
         // Join room action
@@ -95,13 +107,13 @@ public class RoomPanel extends JPanel {
                 return;
             }
 
-        boolean success = joinRoomNanny.joinRoom(roomToJoin);
-    if (success) {
-        JOptionPane.showMessageDialog(this, "Joined room: " + roomToJoin);
-        // TODO: proceed to next step after joining
-    } else {
-        JOptionPane.showMessageDialog(this, "Failed to join room: " + roomToJoin);
-    }
+            boolean success = joinRoomNanny.joinRoom(roomToJoin);
+            if (success) {
+                JOptionPane.showMessageDialog(this, "Joined room: " + roomToJoin);
+                // TODO: proceed to next step after joining
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to join room: " + roomToJoin);
+            }
         });
     }
 
