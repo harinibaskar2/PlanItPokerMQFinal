@@ -1,15 +1,15 @@
 package hbaskar.one;
 
-import hbaskar.two.CreateRoomNanny;
-import hbaskar.two.JoinRoomNanny;
-import hbaskar.two.RoomPanel;
+import hbaskar.two.T1CreateRoomNanny;
+import hbaskar.two.T1JoinRoomNanny;
+import hbaskar.two.T1RoomPanel;
 
-public class LoginNanny {
+public class T1LoginNanny {
 
     private Main main;
     private PlanItPokerRepository repository = PlanItPokerRepository.getInstance();
 
-    public LoginNanny(Main main) {
+    public T1LoginNanny(Main main) {
         this.main = main;
     }
 
@@ -44,14 +44,14 @@ public class LoginNanny {
         main.setTitle("Room");
 
         // Create both nannies
-        JoinRoomNanny joinRoomNanny = new JoinRoomNanny(main);
-        CreateRoomNanny createRoomNanny = new CreateRoomNanny(main);
+        T1JoinRoomNanny joinRoomNanny = new T1JoinRoomNanny(main);
+        T1CreateRoomNanny createRoomNanny = new T1CreateRoomNanny(main);
 
         // Get logged in user name (if needed)
         String username = PlanItPokerRepository.getInstance().getLoggedInUser();
 
         // Create the combined panel with both create & join UI
-        RoomPanel roomPanel = new RoomPanel(username, createRoomNanny, joinRoomNanny);
+        T1RoomPanel roomPanel = new T1RoomPanel(username, createRoomNanny, joinRoomNanny);
 
         // Set combined panel as content pane
         main.setContentPane(roomPanel);

@@ -14,9 +14,9 @@ import javax.swing.SwingConstants;
  *
  * @author javiergs
  */
-public class CreateRoomPanel extends JPanel {
+public class T1CreateRoomPanel extends JPanel {
 	
-	public CreateRoomPanel(CreateRoomNanny createRoomNanny) {
+	public T1CreateRoomPanel(T1CreateRoomNanny createRoomNanny) {
 		setLayout(new GridLayout(4, 1));
 		JLabel title = new JLabel("Create new Room");
 		title.setHorizontalAlignment(SwingConstants.CENTER);

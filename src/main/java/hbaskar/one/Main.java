@@ -14,8 +14,8 @@ public class Main extends JFrame {
 	
 	public Main() {
     System.out.println("Main constructor called");
-    LoginNanny loginNanny = new LoginNanny(this);
-    LoginPanel loginPanel = new LoginPanel(loginNanny);
+    T1LoginNanny loginNanny = new T1LoginNanny(this);
+    T1LoginPanel loginPanel = new T1LoginPanel(loginNanny);
     add(loginPanel);
     StoriesNanny storiesNanny = new StoriesNanny(this);
     StoriesPanel storiesPanel = new StoriesPanel(storiesNanny);

@@ -5,11 +5,11 @@ import hbaskar.one.PlanItPokerRepository;
 import hbaskar.three.StoriesNanny;
 import hbaskar.three.StoriesPanel;
 
-public class CreateRoomNanny {
+public class T1CreateRoomNanny {
 
     private Main main;
 
-    public CreateRoomNanny(Main main) {
+    public T1CreateRoomNanny(Main main) {
         this.main = main;
     }
 
@@ -29,7 +29,7 @@ public class CreateRoomNanny {
 
     private void switchGUI() {
         main.setTitle("Schedule Room");
-        ScheduleRoomPanel scheduleRoomPanel = new ScheduleRoomPanel(this);
+        T1ScheduleRoomPanel scheduleRoomPanel = new T1ScheduleRoomPanel(this);
         main.setContentPane(scheduleRoomPanel);
         main.setSize(500, 500);
         main.revalidate();

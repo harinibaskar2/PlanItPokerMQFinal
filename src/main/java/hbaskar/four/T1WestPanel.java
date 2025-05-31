@@ -14,7 +14,7 @@ import javax.swing.JTextField;
 
 import hbaskar.one.PlanItPokerRepository;
 
-public class WestPanel extends JPanel {
+public class T1WestPanel extends JPanel {
 
     private JComboBox<String> roomSelector;
     private JComboBox<String> inviteRoomSelector; // Changed from JTextField to JComboBox
@@ -34,7 +34,7 @@ public class WestPanel extends JPanel {
     private JTextField storyTitleField;
     private JButton createStoryButton;
 
-    public WestPanel(DashboardNanny dashboardNanny, String username) {
+    public T1WestPanel(DashboardNanny dashboardNanny, String username) {
         this.dashboardNanny = dashboardNanny;
         this.username = username;
 

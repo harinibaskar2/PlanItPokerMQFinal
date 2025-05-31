@@ -8,8 +8,8 @@ import hbaskar.four.DashboardNanny;
 import hbaskar.four.DashboardPanel;
 import hbaskar.one.Main;
 import hbaskar.one.PlanItPokerRepository;
-import hbaskar.two.CreateRoomNanny;
-import hbaskar.two.ScheduleRoomPanel;
+import hbaskar.two.T1CreateRoomNanny;
+import hbaskar.two.T1ScheduleRoomPanel;
 
 /**
  * Controller responsible for managing the stories and their interactions with the user interface.
@@ -76,8 +76,8 @@ public class StoriesNanny {
 
     private void switchSchedule() {
         main.setTitle("Schedule Room");
-        CreateRoomNanny roomNanny = new CreateRoomNanny(main);
-        ScheduleRoomPanel scheduleRoomPanel = new ScheduleRoomPanel(roomNanny);
+        T1CreateRoomNanny roomNanny = new T1CreateRoomNanny(main);
+        T1ScheduleRoomPanel scheduleRoomPanel = new T1ScheduleRoomPanel(roomNanny);
         main.setContentPane(scheduleRoomPanel);
         main.setSize(500, 500);
         main.revalidate();

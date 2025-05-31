@@ -12,10 +12,10 @@ import javax.swing.SwingConstants;
 import hbaskar.one.PlanItPokerRepository;
 import hbaskar.one.PlanItPokerRepository.Room;
 
-public class ScheduleRoomPanel extends JPanel {
-    private CreateRoomNanny createRoomNanny;
+public class T1ScheduleRoomPanel extends JPanel {
+    private T1CreateRoomNanny createRoomNanny;
 
-    public ScheduleRoomPanel(CreateRoomNanny createRoomNanny) {
+    public T1ScheduleRoomPanel(T1CreateRoomNanny createRoomNanny) {
         this.createRoomNanny = createRoomNanny;
         setLayout(new GridLayout(5, 1));
 

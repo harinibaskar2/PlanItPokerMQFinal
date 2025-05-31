@@ -5,11 +5,11 @@ import hbaskar.one.PlanItPokerRepository;
 import hbaskar.three.StoriesNanny;
 import hbaskar.three.StoriesPanel;
 
-public class JoinRoomNanny {
+public class T1JoinRoomNanny {
 
     private Main main;
 
-    public JoinRoomNanny(Main main) {
+    public T1JoinRoomNanny(Main main) {
         this.main = main;
     }
 

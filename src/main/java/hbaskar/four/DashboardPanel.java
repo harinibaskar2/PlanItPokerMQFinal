@@ -34,7 +34,7 @@ public class DashboardPanel extends JPanel {
             username = "Guest";  // fallback username
         }
 
-        WestPanel westPanel = new WestPanel(dashboardNanny, username);
+        T1WestPanel westPanel = new T1WestPanel(dashboardNanny, username);
 
         add(new CardsPanel(), BorderLayout.CENTER);
         add(southPanel, BorderLayout.SOUTH);

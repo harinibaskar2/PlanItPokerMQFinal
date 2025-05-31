@@ -14,11 +14,11 @@ import javax.swing.SwingConstants;
 
 import hbaskar.one.PlanItPokerRepository;
 
-public class RoomPanel extends JPanel {
+public class T1RoomPanel extends JPanel {
 
     private PlanItPokerRepository repository = PlanItPokerRepository.getInstance();
 
-    public RoomPanel(String username, CreateRoomNanny createRoomNanny, JoinRoomNanny joinRoomNanny) {
+    public T1RoomPanel(String username, T1CreateRoomNanny createRoomNanny, T1JoinRoomNanny joinRoomNanny) {
         setLayout(new GridLayout(7, 1, 10, 10)); // rows, cols, hgap, vgap
         setBackground(new Color(255, 204, 204));
 
