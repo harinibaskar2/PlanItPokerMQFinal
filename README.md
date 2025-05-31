@@ -13,3 +13,6 @@ PlanITPoker allows team members to:
 
 Built on MQTT for lightweight, real-time communication in a distributed system.
 
+Rooms:
+Displaying all the cards on one
+
