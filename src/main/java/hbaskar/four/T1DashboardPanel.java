@@ -9,16 +9,16 @@ import hbaskar.one.PlanItPokerRepository;
 /**
  * Integrates a dashboard with the cards, timer, and stories.
  *
- * @author javiergs
+ * @author 
  */
-public class DashboardPanel extends JPanel {
+public class T1DashboardPanel extends JPanel {
 
-    public DashboardPanel(DashboardNanny dashboardNanny) {
+    public T1DashboardPanel(T1DashboardNanny dashboardNanny) {
 
         setLayout(new BorderLayout());
 
-        SouthPanel southPanel = new SouthPanel();
-        dashboardNanny.setSouthPanel(southPanel);
+        T1StoriesPanel T1StoriesPanel = new T1StoriesPanel();
+        dashboardNanny.setT1StoriesPanel(T1StoriesPanel);
 
         // Get the latest player from PlanItPokerRepository current room, for example:
         String currentRoomCode = PlanItPokerRepository.getInstance().getCurrentRoomCode();
@@ -37,7 +37,7 @@ public class DashboardPanel extends JPanel {
         T1WestPanel westPanel = new T1WestPanel(dashboardNanny, username);
 
         add(new CardsPanel(), BorderLayout.CENTER);
-        add(southPanel, BorderLayout.SOUTH);
+        add(T1StoriesPanel, BorderLayout.SOUTH);
         add(westPanel, BorderLayout.EAST);
     }
 }

@@ -1,25 +1,24 @@
 package hbaskar.four;
 import hbaskar.one.Main;
-public class DashboardNanny {
+public class T1DashboardNanny {
 
-    private SouthPanel southPanel;
+    private T1StoriesPanel T1StoriesPanel;
     private Main main;  // Assuming you want to use Main in this class
 
     // Modify constructor to accept Main instance
-    public DashboardNanny(Main main) {
+    public T1DashboardNanny(Main main) {
         this.main = main;
     }
 
 
-    public void setSouthPanel(SouthPanel southPanel) {
-        this.southPanel = southPanel;
+    public void setT1StoriesPanel(T1StoriesPanel T1StoriesPanel) {
+        this.T1StoriesPanel = T1StoriesPanel;
     }
 
     public void onRoomSelected(String roomName) {
         // Logic to fetch stories based on the room selected
-        String stories = fetchStoriesForRoom(roomName);
-        if (southPanel != null) {
-            southPanel.updateActiveStories(stories);
+        if (T1StoriesPanel != null) {
+            T1StoriesPanel.updateActiveStories();
         }
     }
 

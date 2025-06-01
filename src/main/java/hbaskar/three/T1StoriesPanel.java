@@ -11,17 +11,17 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 /**
- * Allows the user to create a new story.
+ * Allows the user to create a new story. And implements behavior for the user to submit and save their stories
  *
  * @author Darien
  * ver 1.1
  */
-public class StoriesPanel extends JPanel {
+public class T1StoriesPanel extends JPanel {
 
     public JTextArea storyTextArea;
     public JTextArea titlTextArea;
 
-    public StoriesPanel(StoriesNanny storiesNanny) {
+    public T1StoriesPanel(T1StoeiesNanny storiesNanny) {
         setLayout(new BorderLayout());
 
         JLabel titleLabel = new JLabel("Create New Story", SwingConstants.CENTER);
