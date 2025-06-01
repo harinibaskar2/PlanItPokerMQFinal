@@ -7,10 +7,22 @@ import java.util.*;
 import java.util.function.Consumer;
 import hbaskar.T1Card;
 
+/**
+ * PlanItPokerSubscriber - MQTT subscriber for receiving and processing game events
+ * 
+ * This class receives real-time game events from MQTT broker and updates the UI accordingly.
+ * Filters events by current room, handles JSON deserialization, and provides callback mechanisms.
+ * Integrates repository operations with event publishing for seamless real-time updates.
+ * 
+ * @author Daniel Miranda
+ * @version 1.0
+ * @since 2025
+ */
+
 public class PlanItPokerSubscriber implements MqttCallback {
     private MqttClient mqttClient;
     private final Gson gson;
-    private final String broker = "tcp://localhost:1883"; // Change to your MQTT broker
+    private final String broker = "tcp://test.mosquitto.org:1883"; // Change to your MQTT broker
     private final String clientId;
     
     // Event handlers

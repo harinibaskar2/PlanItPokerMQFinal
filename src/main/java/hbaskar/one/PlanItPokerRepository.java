@@ -8,7 +8,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import hbaskar.T1Card;
 
-
+/**
+ * PlanItPokerRepository - Centralized data repository for Planning Poker application
+ * 
+ * This singleton class manages all room and story data using thread-safe collections.
+ * Handles room creation, player management, story creation, and scoring operations.
+ * Maintains current room and user state for session management.
+ * 
+ * @author Daniel Miranda
+ * @version 1.0
+ * @since 2025
+ */
 
 public class PlanItPokerRepository {
     private static PlanItPokerRepository instance;

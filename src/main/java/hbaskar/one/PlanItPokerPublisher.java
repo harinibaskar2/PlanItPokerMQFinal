@@ -6,11 +6,23 @@ import com.google.gson.Gson;
 import java.util.UUID;
 import hbaskar.T1Card;
 
+/**
+ * PlanItPokerPublisher - MQTT publisher for real-time game events
+ * 
+ * This singleton class broadcasts game events to all connected clients via MQTT.
+ * Publishes events for room creation, player actions, story management, and game state changes.
+ * Uses JSON serialization for structured message format and reliable delivery.
+ * 
+ * @author Daniel Miranda
+ * @version 1.0
+ * @since 2025
+ */
+
 public class PlanItPokerPublisher {
     private static PlanItPokerPublisher instance;
     private MqttClient mqttClient;
     private final Gson gson;
-    private final String broker = "tcp://localhost:1883"; // Change to your MQTT broker
+    private final String broker = "tcp://test.mosquitto.org:1883"; // Change to your MQTT broker
     private final String clientId;
     
     // MQTT Topics
