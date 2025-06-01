@@ -41,3 +41,4 @@ public class DashboardPanel extends JPanel {
         add(westPanel, BorderLayout.EAST);
     }
 }
+

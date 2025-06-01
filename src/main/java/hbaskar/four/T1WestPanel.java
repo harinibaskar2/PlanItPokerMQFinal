@@ -215,3 +215,4 @@ public class T1WestPanel extends JPanel {
         refreshPlayerList();
     }
 }
+
