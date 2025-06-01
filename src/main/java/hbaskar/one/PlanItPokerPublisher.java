@@ -4,6 +4,7 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import com.google.gson.Gson;
 import java.util.UUID;
+import hbaskar.T1Card;
 
 public class PlanItPokerPublisher {
     private static PlanItPokerPublisher instance;
@@ -19,6 +20,7 @@ public class PlanItPokerPublisher {
     public static final String TOPIC_STORY_SCORED = "planit/story/scored";
     public static final String TOPIC_CARDS_REVEALED = "planit/cards/revealed";
     public static final String TOPIC_ROOMS_UPDATED = "planit/rooms/updated";
+    public static final String TOPIC_MODE_CHANGED = "planit/mode/changed";
     
     private PlanItPokerPublisher() {
         this.gson = new Gson();
@@ -104,6 +106,12 @@ public class PlanItPokerPublisher {
         PlanItPokerRepository repo = PlanItPokerRepository.getInstance();
         RoomsUpdatedEvent event = new RoomsUpdatedEvent(repo.getAvailableRoomCodes());
         publishMessage(TOPIC_ROOMS_UPDATED, event);
+    }
+    
+    // Publish mode changed event
+    public void publishModeChanged(String roomCode, String newMode) {
+        ModeEvent event = new ModeEvent(roomCode, newMode);
+        publishMessage(TOPIC_MODE_CHANGED, event);
     }
     
     // Disconnect from broker
@@ -197,6 +205,18 @@ public class PlanItPokerPublisher {
         
         public RoomsUpdatedEvent(java.util.List<String> availableRooms) {
             this.availableRooms = new java.util.ArrayList<>(availableRooms);
+            this.timestamp = System.currentTimeMillis();
+        }
+    }
+    
+    public static class ModeEvent {
+        public final String roomCode;
+        public final String mode;
+        public final long timestamp;
+        
+        public ModeEvent(String roomCode, String mode) {
+            this.roomCode = roomCode;
+            this.mode = mode;
             this.timestamp = System.currentTimeMillis();
         }
     }
