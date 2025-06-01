@@ -12,6 +12,20 @@ import javax.swing.SwingConstants;
 import hbaskar.one.PlanItPokerRepository;
 import hbaskar.one.PlanItPokerRepository.Room;
 
+/**
+ * This class provides a panel UI for scheduling a time slot for a created room
+ * in the PlanItPoker application. It allows users to select from predefined time
+ * slots and confirm the booking for the currently active room.
+ *
+ *
+ * This panel is meant to be shown after a room has been successfully created,
+ * as part of the room setup workflow.
+ *
+ * @author hbaskar
+ * @version 1.0
+ */
+
+
 public class T1ScheduleRoomPanel extends JPanel {
     private T1CreateRoomNanny createRoomNanny;
 

@@ -14,6 +14,24 @@ import javax.swing.JTextField;
 
 import hbaskar.one.PlanItPokerRepository;
 
+
+/**
+ * Represents the left-side control panel of the PlanItPoker dashboard UI.
+ * This panel allows users to manage rooms, invite teammates, and create stories.
+ * It includes controls for:
+
+ *   Selecting and creating rooms
+ *   Viewing and refreshing the list of players
+ *   Inviting teammates to a selected room
+ *   Creating stories within the current room
+
+ *
+
+ *
+ * @author hbaskar
+ * @version 1.0
+ */
+
 public class T1WestPanel extends JPanel {
 
     private JComboBox<String> roomSelector;

@@ -4,6 +4,19 @@ import hbaskar.two.T1CreateRoomNanny;
 import hbaskar.two.T1JoinRoomNanny;
 import hbaskar.two.T1RoomPanel;
 
+/**
+ * Handles the login and room entry logic for the PlanItPoker application.
+ * This class is responsible for logging in a user, managing default room
+ * creation, adding the user to a room, and switching the GUI to the room panel.
+ *
+ *
+
+ *
+ * @author hbaskar
+ * @version 1.0
+ */
+
+
 public class T1LoginNanny {
 
     private Main main;

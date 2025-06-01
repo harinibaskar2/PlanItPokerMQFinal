@@ -14,6 +14,20 @@ import javax.swing.SwingConstants;
 
 import hbaskar.one.PlanItPokerRepository;
 
+/**
+ * This class provides the user interface panel for both creating and joining rooms 
+ * in the PlanItPoker application. It combines input forms and buttons for creating a new 
+ * room with a specified name and mode, as well as selecting or typing a room name to join.
+ * 
+ *
+ This panel is designed to be displayed as the initial room selection screen, providing
+ * both options—create or join—on a single panel.
+ *
+ * @author hbaskar
+ * @version 1.0
+ */
+
+
 public class T1RoomPanel extends JPanel {
 
     private PlanItPokerRepository repository = PlanItPokerRepository.getInstance();

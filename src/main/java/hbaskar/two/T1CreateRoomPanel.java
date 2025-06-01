@@ -10,10 +10,22 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 /**
- * Creating a new room.
- *
- * @author javiergs
+ * This class defines the user interface panel for creating a new room
+ * in the PlanItPoker application. It provides input fields for the user 
+ * to enter a room name and select a mode from predefined options.
+ * 
+ * 
+ * When the "Create" button is clicked, it delegates the room creation logic 
+ * to the {@code T1CreateRoomNanny}, which handles backend repository calls 
+ * and UI transitions.
+ * 
+ * This panel uses a {@code GridLayout} to organize its components vertically 
+ * and ensure a simple, user-friendly layout.
+ * 
+ * @author hbaskar
+ * @version 1.0
  */
+
 public class T1CreateRoomPanel extends JPanel {
 	
 	public T1CreateRoomPanel(T1CreateRoomNanny createRoomNanny) {
