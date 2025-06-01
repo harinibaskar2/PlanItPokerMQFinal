@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import hbaskar.T1Card;
+
 public class PlanItPokerRepository {
     private static PlanItPokerRepository instance;
     private final Map<String, Room> rooms;
@@ -71,7 +73,7 @@ public class PlanItPokerRepository {
         Room room = rooms.get(roomCode);
         if (room != null) {
             String storyId = "story_" + storyCounter.getAndIncrement();
-            Story story = new Story(storyId, title, description);
+            T1Card story = new T1Card(storyId, title, description);
             room.addStory(story);
             return storyId;
         }
@@ -81,7 +83,7 @@ public class PlanItPokerRepository {
     public void updateStoryScore(String roomCode, String storyId, String playerName, int score) {
         Room room = rooms.get(roomCode);
         if (room != null) {
-            Story story = room.getStory(storyId);
+            T1Card story = room.getStory(storyId);
             if (story != null) {
                 story.addScore(playerName, score);
             }
@@ -91,7 +93,7 @@ public class PlanItPokerRepository {
     public void revealCards(String roomCode, String storyId) {
         Room room = rooms.get(roomCode);
         if (room != null) {
-            Story story = room.getStory(storyId);
+            T1Card story = room.getStory(storyId);
             if (story != null) {
                 story.setRevealed(true);
                 story.calculateAverageScore();
@@ -124,7 +126,7 @@ public class PlanItPokerRepository {
         private String name;
         private String creator;
         private List<String> players;
-        private Map<String, Story> stories;
+        private Map<String, T1Card> stories;
         private String scheduledTime;
 
         public Room(String code, String name, String creator) {
@@ -151,15 +153,15 @@ public class PlanItPokerRepository {
     }
 
 
-        public void addStory(Story story) {
+        public void addStory(T1Card story) {
             stories.put(story.getId(), story);
         }
 
-        public Story getStory(String storyId) {
+        public T1Card getStory(String storyId) {
             return stories.get(storyId);
         }
 
-        public List<Story> getAllStories() {
+        public List<T1Card> getAllStories() {
             return new ArrayList<>(stories.values());
         }
 
@@ -170,43 +172,4 @@ public class PlanItPokerRepository {
         public List<String> getPlayers() { return new ArrayList<>(players); }
     }
 
-    public static class Story {
-        private String id;
-        private String title;
-        private String description;
-        private Map<String, Integer> scores;
-        private double averageScore;
-        private boolean isRevealed;
-
-        public Story(String id, String title, String description) {
-            this.id = id;
-            this.title = title;
-            this.description = description;
-            this.scores = new ConcurrentHashMap<>();
-            this.averageScore = 0.0;
-            this.isRevealed = false;
-        }
-
-        public void addScore(String playerName, int score) {
-            scores.put(playerName, score);
-        }
-
-        public void calculateAverageScore() {
-            if (!scores.isEmpty()) {
-                averageScore = scores.values().stream()
-                    .mapToInt(Integer::intValue)
-                    .average()
-                    .orElse(0.0);
-            }
-        }
-
-        // Getters and Setters
-        public String getId() { return id; }
-        public String getTitle() { return title; }
-        public String getDescription() { return description; }
-        public Map<String, Integer> getScores() { return new HashMap<>(scores); }
-        public double getAverageScore() { return averageScore; }
-        public boolean isRevealed() { return isRevealed; }
-        public void setRevealed(boolean revealed) { isRevealed = revealed; }
-    }
 }
