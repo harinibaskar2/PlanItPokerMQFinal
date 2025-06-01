@@ -2,7 +2,9 @@ package hbaskar.four;
 import hbaskar.one.Main;
 
 /*
- * Watcher for the stories panel for it to catch all the stories and move around
+ * Watcher for the stories panel for it to catch all the stories and move around as well as update the stories
+ * 
+ * author @DarienR5
  * 
  * 
  */

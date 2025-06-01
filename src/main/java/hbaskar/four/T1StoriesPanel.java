@@ -12,6 +12,7 @@ import javax.swing.border.LineBorder;
 
 import hbaskar.one.PlanItPokerRepository;
 import hbaskar.one.PlanItPokerRepository.Room;
+import hbaskar.three.T1StoriesNanny;
 import hbaskar.T1Card;
 
 /*
@@ -24,7 +25,7 @@ import hbaskar.T1Card;
 public class T1StoriesPanel extends JPanel {
     private static JPanel storyCardsPanel;
     
-        public T1StoriesPanel() {
+        public T1StoriesPanel(T1StoriesNanny t1StoriesNanny) {
             setLayout(new BorderLayout());
     
             storyCardsPanel = new JPanel();

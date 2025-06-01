@@ -11,7 +11,8 @@ import javax.swing.JPanel;
 /**
  * Panel that displays the cards used for estimating.
  *
- * @author javiergs
+ * @author DarienR
+ * ver 1.1
  */
 public class CardsPanel extends JPanel {
 	
