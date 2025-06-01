@@ -21,7 +21,7 @@ public class T1StoriesPanel extends JPanel {
     public JTextArea storyTextArea;
     public JTextArea titlTextArea;
 
-    public T1StoriesPanel(T1StoeiesNanny storiesNanny) {
+    public T1StoriesPanel(T1StoriesNanny storiesNanny) {
         setLayout(new BorderLayout());
 
         JLabel titleLabel = new JLabel("Create New Story", SwingConstants.CENTER);

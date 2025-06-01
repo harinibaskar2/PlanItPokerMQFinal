@@ -2,8 +2,8 @@ package hbaskar.one;
 
 import javax.swing.JFrame;
 
-import hbaskar.three.StoriesNanny;
-import hbaskar.three.StoriesPanel;
+import hbaskar.three.T1StoriesNanny;
+import hbaskar.three.T1StoriesPanel;
 
 /**
  * Main class to create a JFrame and display the login panel.
@@ -17,8 +17,8 @@ public class Main extends JFrame {
     T1LoginNanny loginNanny = new T1LoginNanny(this);
     T1LoginPanel loginPanel = new T1LoginPanel(loginNanny);
     add(loginPanel);
-    StoriesNanny storiesNanny = new StoriesNanny(this);
-    StoriesPanel storiesPanel = new StoriesPanel(storiesNanny);
+    T1StoriesNanny storiesNanny = new T1StoriesNanny(this);
+    T1StoriesPanel storiesPanel = new T1StoriesPanel(storiesNanny);
 }
 
 public static void main(String[] args) {

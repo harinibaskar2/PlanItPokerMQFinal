@@ -15,6 +15,16 @@ T1ScheduleRoomPanel.java
 T1WestPanel.java
 T1LoginNanny.java 
 
+
+Cards and Updates-Darien Rodrigo
+T1DashboardNanny
+T1DashboardPanel
+T1CardsPanel
+T1StoriesPanel
+T1StoriesNanny
+T1StoriesPanel
+T1Card
+
 ✉️ Send estimates anonymously
 
 🃏 Reveal estimates

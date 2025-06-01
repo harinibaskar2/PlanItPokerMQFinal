@@ -9,7 +9,7 @@ import hbaskar.one.PlanItPokerRepository;
 /**
  * Integrates a dashboard with the cards, timer, and stories.
  *
- * @author 
+ * @author Darien
  */
 public class T1DashboardPanel extends JPanel {
 

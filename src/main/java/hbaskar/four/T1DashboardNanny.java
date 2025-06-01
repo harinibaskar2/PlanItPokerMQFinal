@@ -1,5 +1,11 @@
 package hbaskar.four;
 import hbaskar.one.Main;
+
+/*
+ * Watcher for the stories panel for it to catch all the stories and move around
+ * 
+ * 
+ */
 public class T1DashboardNanny {
 
     private T1StoriesPanel T1StoriesPanel;

@@ -45,14 +45,14 @@ public class T1WestPanel extends JPanel {
     private JTextField newRoomCodeField;
     private JButton createRoomButton;
 
-    private DashboardNanny dashboardNanny;
+    private T1DashboardNanny dashboardNanny;
     private String username;
 
     // Only storyTitleField now
     private JTextField storyTitleField;
     private JButton createStoryButton;
 
-    public T1WestPanel(DashboardNanny dashboardNanny, String username) {
+    public T1WestPanel(T1DashboardNanny dashboardNanny, String username) {
         this.dashboardNanny = dashboardNanny;
         this.username = username;
 

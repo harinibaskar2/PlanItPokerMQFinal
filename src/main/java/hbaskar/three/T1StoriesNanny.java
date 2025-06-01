@@ -14,6 +14,8 @@ import hbaskar.two.T1ScheduleRoomPanel;
 
 /**
  * Controller responsible for managing the stories and their interactions with the user interface.
+ * 
+ * author @DarienR5
  */
 public class T1StoriesNanny {
 

@@ -28,7 +28,7 @@ public class CardsPanel extends JPanel {
 			add(card);
 			card.addActionListener(e->{
 				System.out.println(value);
-				DashboardNanny.onSizePress(value);
+				T1DashboardNanny.onSizePress(value);
 			});
 		}
 	}
