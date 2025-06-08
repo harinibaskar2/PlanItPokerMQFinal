@@ -13,7 +13,7 @@ import javax.swing.SwingConstants;
 /**
  * Allows the user to create a new story. And implements behavior for the user to submit and save their stories
  *
- * @author Darien
+ * @author hbaskar
  * ver 1.1
  */
 public class T1StoriesPanel extends JPanel {
