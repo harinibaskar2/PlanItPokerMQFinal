@@ -1,7 +1,6 @@
 
 package hbaskar.api;
 
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -11,7 +10,6 @@ import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 public class TaigaStoryFetcher {
 	
 	private static final String TAIGA_API = "https://api.taiga.io/api/v1";
