@@ -13,8 +13,9 @@ import org.json.JSONObject;
 public class TaigaStoryFetcher {
 	
 	private static final String TAIGA_API = "https://api.taiga.io/api/v1";
-	private static final String USERNAME = "your_username";
-	private static final String PASSWORD = "your_password";
+	private static final String USERNAME = System.getenv("TAIGA_USERNAME");
+	private static final String PASSWORD = System.getenv("TAIGA_PASSWORD");
+	
 	
 	public static void main(String[] args) throws Exception {
 		try {
