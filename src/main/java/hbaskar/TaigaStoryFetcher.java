@@ -1,5 +1,5 @@
 
-package hbaskar.api;
+package hbaskar;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

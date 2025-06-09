@@ -5,7 +5,7 @@ import javax.swing.JOptionPane;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import hbaskar.api.TaigaStoryFetcher;
+import hbaskar.TaigaStoryFetcher;
 import hbaskar.four.T1DashboardNanny;
 import hbaskar.four.T1DashboardPanel;
 import hbaskar.one.Main;
