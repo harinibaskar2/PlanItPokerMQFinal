@@ -4,34 +4,26 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 /**
- * Panel with import button, project slug display, and a list to display fetched Taiga stories.
+ * Panel for creating a new story with a text field and import button.
  * 
  * @author hbaskar
- * ver 1.5
+ * ver 1.6
  */
 public class T1StoriesPanel extends JPanel {
 
-    private DefaultListModel<String> listModel;
-    private JList<String> storyList;
-    private JLabel statusLabel;
-    private JTextField projectSlugField;
+    private JTextField storyField;
 
     public T1StoriesPanel(T1StoriesNanny storiesNanny) {
-        setLayout(new BorderLayout(10, 10));
+        setLayout(new BorderLayout(15, 15));
         setBackground(Color.WHITE);
         setBorder(new EmptyBorder(20, 20, 20, 20));
 
@@ -41,82 +33,39 @@ public class T1StoriesPanel extends JPanel {
         titleLabel.setForeground(new Color(50, 50, 50));
         add(titleLabel, BorderLayout.NORTH);
 
-        // Top panel with import button
-        JPanel topPanel = new JPanel();
-        topPanel.setBackground(Color.WHITE);
+        // Text field for story name/input
+        storyField = new JTextField();
+        storyField.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        storyField.setPreferredSize(new Dimension(300, 40));
+        add(storyField, BorderLayout.CENTER);
 
-        JButton importButton = new JButton("Import from Taiga Backlog");
-        importButton.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        // Button to import from Taiga
+        JButton importButton = new JButton("Import from Taiga");
+        importButton.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         importButton.setBackground(new Color(240, 173, 78));
         importButton.setForeground(Color.DARK_GRAY);
         importButton.setFocusPainted(false);
-        importButton.setPreferredSize(new Dimension(300, 60));
+        importButton.setPreferredSize(new Dimension(300, 50));
         importButton.setToolTipText("Click to import user stories from your Taiga backlog");
         importButton.addActionListener(e -> storiesNanny.importStories());
-        topPanel.add(importButton);
 
-        add(topPanel, BorderLayout.PAGE_START);
-
-        // Project slug panel
-        projectSlugField = new JTextField();
-        projectSlugField.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-        projectSlugField.setEditable(false);  // read-only
-        projectSlugField.setPreferredSize(new Dimension(300, 30));
-        projectSlugField.setToolTipText("Taiga Project Slug");
-
-        JLabel projectLabel = new JLabel("Project Slug:");
-        projectLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
-
-        JPanel projectPanel = new JPanel(new BorderLayout(5, 5));
-        projectPanel.setBackground(Color.WHITE);
-        projectPanel.add(projectLabel, BorderLayout.WEST);
-        projectPanel.add(projectSlugField, BorderLayout.CENTER);
-
-        // Stories list and scroll pane
-        listModel = new DefaultListModel<>();
-        storyList = new JList<>(listModel);
-        storyList.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-        storyList.setVisibleRowCount(10);
-
-        JScrollPane scrollPane = new JScrollPane(storyList);
-        scrollPane.setBorder(BorderFactory.createTitledBorder("Taiga Stories"));
-
-        // Center panel to hold project slug and stories list
-        JPanel centerPanel = new JPanel(new BorderLayout(10, 10));
-        centerPanel.setBackground(Color.WHITE);
-        centerPanel.add(projectPanel, BorderLayout.NORTH);
-        centerPanel.add(scrollPane, BorderLayout.CENTER);
-
-        add(centerPanel, BorderLayout.CENTER);
-
-        // Status label at bottom
-        statusLabel = new JLabel("No stories loaded.", SwingConstants.CENTER);
-        statusLabel.setFont(new Font("Segoe UI", Font.ITALIC, 14));
-        statusLabel.setForeground(Color.GRAY);
-        add(statusLabel, BorderLayout.SOUTH);
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(Color.WHITE);
+        buttonPanel.add(importButton);
+        add(buttonPanel, BorderLayout.SOUTH);
     }
 
     /**
-     * Update the list with story titles.
-     * @param stories List of story titles
+     * @return text the user typed in the story field
      */
-    public void updateStoriesList(List<String> stories) {
-        listModel.clear();
-        if (stories == null || stories.isEmpty()) {
-            statusLabel.setText("No stories found.");
-        } else {
-            for (String title : stories) {
-                listModel.addElement(title);
-            }
-            statusLabel.setText(stories.size() + " stories loaded.");
-        }
+    public String getStoryText() {
+        return storyField.getText().trim();
     }
 
     /**
-     * Set the project slug displayed in the text field.
-     * @param slug project slug string
+     * Clear the story input field.
      */
-    public void setProjectSlug(String slug) {
-        projectSlugField.setText(slug != null ? slug : "");
+    public void clearStoryField() {
+        storyField.setText("");
     }
 }

@@ -1,10 +1,14 @@
 package hbaskar.one;
 
-import org.eclipse.paho.client.mqttv3.*;
-import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-import com.google.gson.Gson;
 import java.util.UUID;
-import hbaskar.T1Card;
+
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+
+import com.google.gson.Gson;
 
 /**
  * PlanItPokerPublisher - MQTT publisher for real-time game events

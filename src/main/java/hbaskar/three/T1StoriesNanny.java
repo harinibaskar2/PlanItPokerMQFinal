@@ -1,7 +1,5 @@
 package hbaskar.three;
 
-import java.util.List;
-
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,13 +15,6 @@ import hbaskar.four.T1DashboardNanny;
 import hbaskar.one.Main;
 import hbaskar.one.PlanItPokerRepository;
 import hbaskar.two.T1CreateRoomNanny;
-
-/**
- * Controller for managing Taiga story import and UI transitions.
- * 
- * @author hbaskar
- */
-
 
 /**
  * Controller for managing Taiga story import and UI transitions.
@@ -61,22 +52,19 @@ public class T1StoriesNanny {
 
     public void importFromTaigaWithCredentials(String username, String password, String projectSlug) {
         repository.setTaigaCredentials(username, password);
-    
+
         System.out.println("Importing from Taiga for project: " + projectSlug);
-    
-        // Create loading dialog, but do NOT block EDT by calling setVisible here
+
         final JDialog loadingDialog = createLoadingDialog(main, "Importing stories from Taiga...");
-        
-        // Run API call in background thread to avoid freezing UI
+
         new Thread(() -> {
             try {
-                // Show the dialog on EDT asynchronously (non-blocking)
                 SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
-    
+
                 String authToken = TaigaStoryFetcher.loginAndGetToken(username, password);
                 int projectId = TaigaStoryFetcher.getProjectId(authToken, projectSlug);
                 JSONArray backlogStories = TaigaStoryFetcher.fetchUserStories(authToken, projectId);
-    
+
                 String roomCode = repository.getCurrentRoomCode();
                 if (roomCode == null) {
                     SwingUtilities.invokeLater(() -> {
@@ -85,24 +73,20 @@ public class T1StoriesNanny {
                     });
                     return;
                 }
-    
-                List<String> storyTitles = new java.util.ArrayList<>();
+
                 for (int i = 0; i < backlogStories.length(); i++) {
                     JSONObject story = backlogStories.getJSONObject(i);
                     String title = story.optString("subject", "Untitled");
                     String description = story.optString("description", "(no description)");
                     repository.createStory(roomCode, title, description);
-                    storyTitles.add(title);
                 }
-    
+
                 SwingUtilities.invokeLater(() -> {
                     loadingDialog.dispose();
-                    storiesPanel.setProjectSlug(projectSlug);
-                    storiesPanel.updateStoriesList(storyTitles);
                     JOptionPane.showMessageDialog(main, "Imported " + backlogStories.length() + " stories from Taiga.", "Success", JOptionPane.INFORMATION_MESSAGE);
                     backToStoriesPanel();
                 });
-    
+
             } catch (Exception e) {
                 e.printStackTrace();
                 SwingUtilities.invokeLater(() -> {
@@ -112,8 +96,6 @@ public class T1StoriesNanny {
             }
         }).start();
     }
-    
-    
 
     public void backToStoriesPanel() {
         main.setTitle("Create New Story");
