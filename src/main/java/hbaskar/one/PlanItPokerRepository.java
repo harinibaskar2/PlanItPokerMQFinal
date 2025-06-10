@@ -32,6 +32,11 @@ public class PlanItPokerRepository {
     private String loggedInUser;
 
 
+        private String taigaUsername;
+    private String taigaPassword;
+
+
+
     private PlanItPokerRepository() {
         this.rooms = new ConcurrentHashMap<>();
         this.roomCounter = new AtomicInteger(1);
@@ -60,7 +65,19 @@ public class PlanItPokerRepository {
         setCurrentRoomCode(roomName);
         return roomName;
     }
-
+    public void setTaigaCredentials(String username, String password) {
+        this.taigaUsername = username;
+        this.taigaPassword = password;
+    }
+    
+    public String getTaigaUsername() {
+        return taigaUsername;
+    }
+    
+    public String getTaigaPassword() {
+        return taigaPassword;
+    }
+    
 
     public Room getRoom(String roomCode) {
         return rooms.get(roomCode);

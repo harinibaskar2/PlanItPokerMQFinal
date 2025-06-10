@@ -1,6 +1,7 @@
 package hbaskar.three;
 
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,9 +15,9 @@ import hbaskar.two.T1CreateRoomNanny;
 import hbaskar.two.T1ScheduleRoomPanel;
 
 /**
- * Controller responsible for managing the stories and their interactions with the user interface.
+ * Controller for managing Taiga story import and UI transitions.
  * 
- * author @hbaskar
+ * @author hbaskar
  */
 public class T1StoriesNanny {
 
@@ -24,80 +25,77 @@ public class T1StoriesNanny {
     private Main main;
     private PlanItPokerRepository repository = PlanItPokerRepository.getInstance();
 
-
+    // Primary constructor used in Main
     public T1StoriesNanny(Main main) {
         this.main = main;
-        this.storiesPanel = new T1StoriesPanel(this); // This is the only panel you need
+        this.storiesPanel = new T1StoriesPanel(this); // Panel that shows "Import from Taiga"
+    }
+
+    // Optional constructor (e.g., for testing or specific injection)
+    public T1StoriesNanny(T1StoriesPanel panel) {
+        this.storiesPanel = panel;
     }
 
     public T1StoriesPanel getPanel() {
         return storiesPanel;
     }
 
+    // Called when the "Import from Taiga Backlog" button is clicked
+    public void importStories() {
+        System.out.println("Opening Taiga login panel...");
+        main.setTitle("Login to Taiga");
 
-    public T1StoriesNanny(T1StoriesPanel panel) {
-        this.storiesPanel = panel;
+        JPanel loginPanel = new T1TaigaLoginPanel(this); // Show login form
+        main.setContentPane(loginPanel);
+        main.setSize(400, 250);
+        main.setLocationRelativeTo(null);
+        main.revalidate();
+        main.repaint();
+    }
+
+    // Called after submitting username/password/project
+    public void importFromTaigaWithCredentials(String username, String password, String projectSlug) {
+        // Store credentials centrally
+        repository.setTaigaCredentials(username, password);
+    
+        System.out.println("Importing from Taiga for project: " + projectSlug);
+    
+        try {
+            String authToken = TaigaStoryFetcher.loginAndGetToken(username, password);
+            int projectId = TaigaStoryFetcher.getProjectId(authToken, projectSlug);
+            JSONArray backlogStories = TaigaStoryFetcher.fetchUserStories(authToken, projectId);
+    
+            String roomCode = repository.getCurrentRoomCode();
+            if (roomCode == null) {
+                JOptionPane.showMessageDialog(null, "No room selected.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+    
+            for (int i = 0; i < backlogStories.length(); i++) {
+                JSONObject story = backlogStories.getJSONObject(i);
+                String title = story.optString("subject", "Untitled");
+                String description = story.optString("description", "(no description)");
+                repository.createStory(roomCode, title, description);
+            }
+    
+            JOptionPane.showMessageDialog(null, "Imported " + backlogStories.length() + " stories from Taiga.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            backToStoriesPanel();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Failed to import stories:\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
-    public void saveAndAddNew(String text) {
-        System.out.println("Saving and adding new story:\n" + text);
 
-        String roomCode = repository.getCurrentRoomCode();
-        if (roomCode != null) {
-            repository.createStory(roomCode, "Untitled", text);
-        } else {
-            System.err.println("No room selected. Cannot add story.");
-        }
-
-        storiesPanel.storyTextArea.setText("");
+    // Return to the story panel
+    public void backToStoriesPanel() {
+        main.setTitle("Create New Story");
+        main.setContentPane(storiesPanel);
+        main.setSize(800, 600);
+        main.setLocationRelativeTo(null);
+        main.revalidate();
+        main.repaint();
     }
-
-    public void saveAndClose(String text) {
-        System.out.println("Saving and closing story:\n" + text);
-
-        String roomCode = repository.getCurrentRoomCode();
-        if (roomCode != null) {
-            repository.createStory(roomCode, "Untitled", text);
-        } else {
-            System.err.println("No room selected. Cannot add story.");
-        }
-
-        switchToDashboard();
-    }
-
-    public void importStories() {
-    System.out.println("Importing stories from Taiga...");
-
-    try {
-        // Replace with your actual credentials
-        String username = "your_username";
-        String password = "your_password";
-        String projectSlug = "2thesimplexity-pac-man";
-
-        String authToken = TaigaStoryFetcher.loginAndGetToken(username, password);
-        int projectId = TaigaStoryFetcher.getProjectId(authToken, projectSlug);
-        JSONArray backlogStories = TaigaStoryFetcher.fetchUserStories(authToken, projectId);
-
-        String roomCode = repository.getCurrentRoomCode();
-        if (roomCode == null) {
-            System.err.println("No room selected. Cannot import stories.");
-            return;
-        }
-
-        for (int i = 0; i < backlogStories.length(); i++) {
-            JSONObject story = backlogStories.getJSONObject(i);
-            String title = story.optString("subject", "Untitled");
-            String description = story.optString("description", "(no description)");
-            repository.createStory(roomCode, title, description);
-        }
-
-        JOptionPane.showMessageDialog(null, "Imported " + backlogStories.length() + " stories from Taiga.", "Success", JOptionPane.INFORMATION_MESSAGE);
-     
-    } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(null, "Failed to import stories:\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
-}
 
     public void cancel() {
         System.out.println("Cancelling story creation...");
@@ -113,7 +111,6 @@ public class T1StoriesNanny {
         main.setLocationRelativeTo(null);
         main.revalidate();
         main.repaint();
-        
     }
 
     private void switchToSchedule() {
