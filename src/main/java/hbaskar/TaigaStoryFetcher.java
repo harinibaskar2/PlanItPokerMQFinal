@@ -21,7 +21,7 @@ public class TaigaStoryFetcher {
             String authToken = loginAndGetToken(USERNAME, PASSWORD);
 
             // Example project slug; change this to your project slug
-            String projectSlug = "2thesimplexity-pac-man";
+            String projectSlug = "CSC307 - Team 06 - PlanningPoker";
             int projectId = getProjectId(authToken, projectSlug);
             System.out.println("Project ID for slug '" + projectSlug + "': " + projectId);
 
@@ -37,40 +37,50 @@ public class TaigaStoryFetcher {
     }
 
     public static String loginAndGetToken(String username, String password) throws Exception {
-        URL url = new URL(TAIGA_API + "/auth");
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Type", "application/json");
-        conn.setDoOutput(true);
-
-        String jsonInput = String.format(
-            "{\"type\": \"normal\", \"username\": \"%s\", \"password\": \"%s\"}",
-            username, password);
-
-        try (OutputStream os = conn.getOutputStream()) {
-            os.write(jsonInput.getBytes());
-            os.flush();
-        }
-
-        int responseCode = conn.getResponseCode();
-        BufferedReader in = new BufferedReader(new InputStreamReader(
-            responseCode == 200 ? conn.getInputStream() : conn.getErrorStream()));
-
-        StringBuilder response = new StringBuilder();
-        String line;
-        while ((line = in.readLine()) != null) {
-            response.append(line);
-        }
-        in.close();
-
-        JSONObject json = new JSONObject(response.toString());
-        if (responseCode != 200) {
-            String errorMessage = json.optString("_error_message", "Unknown error");
-            throw new RuntimeException("Login failed: " + errorMessage);
-        }
-
-        return json.getString("auth_token");
-    }
+		URL url = new URL(TAIGA_API + "/auth");
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("POST");
+		conn.setRequestProperty("Content-Type", "application/json");
+		conn.setDoOutput(true);
+	
+		String jsonInput = String.format(
+			"{\"type\": \"normal\", \"username\": \"%s\", \"password\": \"%s\"}",
+			username, password);
+	
+		try (OutputStream os = conn.getOutputStream()) {
+			os.write(jsonInput.getBytes());
+			os.flush();
+		}
+	
+		int responseCode = conn.getResponseCode();
+		InputStreamReader streamReader = new InputStreamReader(
+			responseCode == 200 ? conn.getInputStream() : conn.getErrorStream()
+		);
+		BufferedReader in = new BufferedReader(streamReader);
+	
+		StringBuilder response = new StringBuilder();
+		String line;
+		while ((line = in.readLine()) != null) {
+			response.append(line);
+		}
+		in.close();
+	
+		// Try parsing response only if it's JSON
+		try {
+			JSONObject json = new JSONObject(response.toString());
+	
+			if (responseCode != 200) {
+				String errorMessage = json.optString("_error_message",
+										json.optString("msg", "Unknown login error"));
+				throw new RuntimeException("Login failed: " + errorMessage);
+			}
+	
+			return json.getString("auth_token");
+		} catch (Exception e) {
+			throw new RuntimeException("Login failed, invalid response: " + response.toString());
+		}
+	}
+	
 
     public static int getProjectId(String token, String projectSlug) throws Exception {
         URL url = new URL(TAIGA_API + "/projects/by_slug?slug=" + projectSlug);

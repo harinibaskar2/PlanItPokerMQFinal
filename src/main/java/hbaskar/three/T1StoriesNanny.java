@@ -1,18 +1,29 @@
 package hbaskar.three;
 
+import java.util.List;
+
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import hbaskar.TaigaStoryFetcher;
 import hbaskar.four.T1DashboardNanny;
-import hbaskar.four.T1DashboardPanel;
 import hbaskar.one.Main;
 import hbaskar.one.PlanItPokerRepository;
 import hbaskar.two.T1CreateRoomNanny;
-import hbaskar.two.T1ScheduleRoomPanel;
+
+/**
+ * Controller for managing Taiga story import and UI transitions.
+ * 
+ * @author hbaskar
+ */
+
 
 /**
  * Controller for managing Taiga story import and UI transitions.
@@ -25,13 +36,11 @@ public class T1StoriesNanny {
     private Main main;
     private PlanItPokerRepository repository = PlanItPokerRepository.getInstance();
 
-    // Primary constructor used in Main
     public T1StoriesNanny(Main main) {
         this.main = main;
-        this.storiesPanel = new T1StoriesPanel(this); // Panel that shows "Import from Taiga"
+        this.storiesPanel = new T1StoriesPanel(this);
     }
 
-    // Optional constructor (e.g., for testing or specific injection)
     public T1StoriesNanny(T1StoriesPanel panel) {
         this.storiesPanel = panel;
     }
@@ -40,59 +49,75 @@ public class T1StoriesNanny {
         return storiesPanel;
     }
 
-    // Called when the "Import from Taiga Backlog" button is clicked
     public void importStories() {
         System.out.println("Opening Taiga login panel...");
         main.setTitle("Login to Taiga");
 
-        JPanel loginPanel = new T1TaigaLoginPanel(this); // Show login form
+        JPanel loginPanel = new T1TaigaLoginPanel(this);
         main.setContentPane(loginPanel);
-        main.setSize(400, 250);
-        main.setLocationRelativeTo(null);
         main.revalidate();
         main.repaint();
     }
 
-    // Called after submitting username/password/project
     public void importFromTaigaWithCredentials(String username, String password, String projectSlug) {
-        // Store credentials centrally
         repository.setTaigaCredentials(username, password);
     
         System.out.println("Importing from Taiga for project: " + projectSlug);
     
-        try {
-            String authToken = TaigaStoryFetcher.loginAndGetToken(username, password);
-            int projectId = TaigaStoryFetcher.getProjectId(authToken, projectSlug);
-            JSONArray backlogStories = TaigaStoryFetcher.fetchUserStories(authToken, projectId);
+        // Create loading dialog, but do NOT block EDT by calling setVisible here
+        final JDialog loadingDialog = createLoadingDialog(main, "Importing stories from Taiga...");
+        
+        // Run API call in background thread to avoid freezing UI
+        new Thread(() -> {
+            try {
+                // Show the dialog on EDT asynchronously (non-blocking)
+                SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
     
-            String roomCode = repository.getCurrentRoomCode();
-            if (roomCode == null) {
-                JOptionPane.showMessageDialog(null, "No room selected.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
+                String authToken = TaigaStoryFetcher.loginAndGetToken(username, password);
+                int projectId = TaigaStoryFetcher.getProjectId(authToken, projectSlug);
+                JSONArray backlogStories = TaigaStoryFetcher.fetchUserStories(authToken, projectId);
+    
+                String roomCode = repository.getCurrentRoomCode();
+                if (roomCode == null) {
+                    SwingUtilities.invokeLater(() -> {
+                        loadingDialog.dispose();
+                        JOptionPane.showMessageDialog(main, "No room selected.", "Error", JOptionPane.ERROR_MESSAGE);
+                    });
+                    return;
+                }
+    
+                List<String> storyTitles = new java.util.ArrayList<>();
+                for (int i = 0; i < backlogStories.length(); i++) {
+                    JSONObject story = backlogStories.getJSONObject(i);
+                    String title = story.optString("subject", "Untitled");
+                    String description = story.optString("description", "(no description)");
+                    repository.createStory(roomCode, title, description);
+                    storyTitles.add(title);
+                }
+    
+                SwingUtilities.invokeLater(() -> {
+                    loadingDialog.dispose();
+                    storiesPanel.setProjectSlug(projectSlug);
+                    storiesPanel.updateStoriesList(storyTitles);
+                    JOptionPane.showMessageDialog(main, "Imported " + backlogStories.length() + " stories from Taiga.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    backToStoriesPanel();
+                });
+    
+            } catch (Exception e) {
+                e.printStackTrace();
+                SwingUtilities.invokeLater(() -> {
+                    loadingDialog.dispose();
+                    JOptionPane.showMessageDialog(main, "Failed to import stories:\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                });
             }
-    
-            for (int i = 0; i < backlogStories.length(); i++) {
-                JSONObject story = backlogStories.getJSONObject(i);
-                String title = story.optString("subject", "Untitled");
-                String description = story.optString("description", "(no description)");
-                repository.createStory(roomCode, title, description);
-            }
-    
-            JOptionPane.showMessageDialog(null, "Imported " + backlogStories.length() + " stories from Taiga.", "Success", JOptionPane.INFORMATION_MESSAGE);
-            backToStoriesPanel();
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Failed to import stories:\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        }).start();
     }
     
+    
 
-    // Return to the story panel
     public void backToStoriesPanel() {
         main.setTitle("Create New Story");
         main.setContentPane(storiesPanel);
-        main.setSize(800, 600);
-        main.setLocationRelativeTo(null);
         main.revalidate();
         main.repaint();
     }
@@ -105,10 +130,7 @@ public class T1StoriesNanny {
     private void switchToDashboard() {
         main.setTitle("Dashboard");
         T1DashboardNanny dashboardNanny = new T1DashboardNanny(main);
-        T1DashboardPanel dashboardPanel = new T1DashboardPanel(dashboardNanny);
-        main.setContentPane(dashboardPanel);
-        main.setSize(800, 600);
-        main.setLocationRelativeTo(null);
+        main.setContentPane(new hbaskar.four.T1DashboardPanel(dashboardNanny));
         main.revalidate();
         main.repaint();
     }
@@ -116,10 +138,19 @@ public class T1StoriesNanny {
     private void switchToSchedule() {
         main.setTitle("Schedule Room");
         T1CreateRoomNanny roomNanny = new T1CreateRoomNanny(main);
-        T1ScheduleRoomPanel scheduleRoomPanel = new T1ScheduleRoomPanel(roomNanny);
-        main.setContentPane(scheduleRoomPanel);
-        main.setSize(500, 500);
+        main.setContentPane(new hbaskar.two.T1ScheduleRoomPanel(roomNanny));
         main.revalidate();
         main.repaint();
+    }
+
+    private JDialog createLoadingDialog(JFrame parent, String message) {
+        JDialog dialog = new JDialog(parent, true);
+        JPanel panel = new JPanel();
+        panel.add(new JLabel(message));
+        dialog.getContentPane().add(panel);
+        dialog.setUndecorated(true);
+        dialog.pack();
+        dialog.setLocationRelativeTo(parent);
+        return dialog;
     }
 }
