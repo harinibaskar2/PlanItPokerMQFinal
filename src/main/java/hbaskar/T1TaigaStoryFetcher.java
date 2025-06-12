@@ -1,11 +1,11 @@
 package hbaskar;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.json.JSONArray;
@@ -16,31 +16,30 @@ import hbaskar.one.PlanItPokerRepository;
 public class T1TaigaStoryFetcher {
 
     private static final String TAIGA_API = "https://api.taiga.io/api/v1";
-public static void main(String[] args) throws Exception {
-    try {
-        PlanItPokerRepository repo = PlanItPokerRepository.getInstance();
 
-        String USERNAME = repo.getTaigaUsername();
-        String PASSWORD = repo.getTaigaPassword();
-        String projectSlug = repo.getTaigaProjectSlug();
+    public static void main(String[] args) throws Exception {
+        try {
+            PlanItPokerRepository repo = PlanItPokerRepository.getInstance();
 
-        String authToken = loginAndGetToken(USERNAME, PASSWORD);
-        repo.setTaigaAuthToken(authToken);
+            String USERNAME = repo.getTaigaUsername();
+            String PASSWORD = repo.getTaigaPassword();
+            String projectSlug = repo.getTaigaProjectSlug();
 
-        int projectId = getProjectId(authToken, projectSlug);
-        repo.setTaigaProjectId(projectId);
+            String authToken = loginAndGetToken(USERNAME, PASSWORD);
+            repo.setTaigaAuthToken(authToken);
 
-        System.out.println("Project ID for slug '" + projectSlug + "': " + projectId);
+            int projectId = getProjectId(authToken, projectSlug);
+            repo.setTaigaProjectId(projectId);
 
-        JSONArray stories = fetchUserStories(authToken, projectId);
-        extractUniquePointIds(stories);
-        updateBacklogTotalPoints(authToken, stories, 5.0);
+            System.out.println("Project ID for slug '" + projectSlug + "': " + projectId);
 
-    } catch (Exception e) {
-        e.printStackTrace();
+            JSONArray stories = fetchUserStories(authToken, projectId);
+            extractUniquePointIds(stories);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-}
-
 
     public static String loginAndGetToken(String username, String password) throws Exception {
         URL url = new URL(TAIGA_API + "/auth");
@@ -119,20 +118,6 @@ public static void main(String[] args) throws Exception {
         JSONArray allStories = new JSONArray(response.toString());
         JSONArray backlogStories = new JSONArray();
 
-        Map<String, String> roleIdToName = Map.of(
-            "5100817", "UX",
-            "5100818", "Design",
-            "5100816", "Front",
-            "5100815", "Back"
-        );
-
-        Map<Integer, Integer> pointIdToValue = Map.of(
-            10136072, 8,  // UX
-            10136073, 1,  // Design
-            10136071, 2,  // Front
-            10136075, 3   // Back
-        );
-
         System.out.println("Backlog stories:");
         for (int i = 0; i < allStories.length(); i++) {
             JSONObject story = allStories.getJSONObject(i);
@@ -155,22 +140,7 @@ public static void main(String[] args) throws Exception {
                 System.out.printf("• #%d - %s\n   Responsible: %s\n   Total Points: %s\n",
                     id, subject, responsible, totalPoints);
 
-                if (!story.isNull("points")) {
-                    JSONObject pointsObj = story.getJSONObject("points");
-                    int sum = 0;
-                    for (String roleId : pointsObj.keySet()) {
-                        int pointId = pointsObj.getInt(roleId);
-                        int value = pointIdToValue.getOrDefault(pointId, -1);
-                        String role = roleIdToName.getOrDefault(roleId, "Unknown");
-
-                        System.out.printf("     - %s (roleId: %s) → pointId: %d → value: %s\n",
-                            role, roleId, pointId, (value >= 0 ? value : "?"));
-                        if (value >= 0) sum += value;
-                    }
-                    System.out.println("     = Computed Sum: " + sum + "\n");
-                } else {
-                    System.out.println("     No per-role points assigned.\n");
-                }
+                System.out.println();
             }
         }
 
@@ -209,11 +179,5 @@ public static void main(String[] args) throws Exception {
         for (String id : uniqueRoleIds) {
             System.out.println("roleId: " + id);
         }
-    }
-
-
-    public static void updateBacklogTotalPoints(String token, JSONArray stories, double newPoints) {
-        System.out.println("Update backlog total points not implemented yet.");
-        // Implement  update logic here if needed
     }
 }
