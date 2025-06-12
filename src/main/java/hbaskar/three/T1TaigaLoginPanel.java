@@ -11,6 +11,25 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+
+
+/**
+ * A Swing JPanel that provides a user interface for importing stories from Taiga.
+ * 
+ * This panel contains input fields for Taiga username, password, and project slug,
+ * along with "Import" and "Cancel" buttons.</p>
+ * 
+ * When the "Import" button is clicked, the entered credentials and project slug
+ * are passed to the {@link T1StoriesNanny} instance to perform the import.</p>
+ * 
+ * When the "Cancel" button is clicked, the panel requests the {@code T1StoriesNanny}
+ * to return to the previous stories panel.
+
+ * 
+ * @author hbaskar
+ * @version 1.0
+ */
+
 public class T1TaigaLoginPanel extends JPanel {
 
     public T1TaigaLoginPanel(T1StoriesNanny nanny) {

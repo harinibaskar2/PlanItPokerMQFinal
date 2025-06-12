@@ -17,9 +17,16 @@ import hbaskar.one.PlanItPokerRepository;
 import hbaskar.two.T1CreateRoomNanny;
 
 /**
- * Controller for managing Taiga story import and UI transitions.
+ * Controller class responsible for managing the import of stories from Taiga
+ * and handling UI transitions related to story management within the PlanItPoker application.
+ * 
+ * This class interacts with the Taiga API through {@link T1TaigaStoryFetcher}
+ * to authenticate, fetch project and backlog story data, and coordinate updates
+ * to the user interface via the main application frame.
+
  * 
  * @author hbaskar
+ * @version 1.0
  */
 public class T1StoriesNanny {
 

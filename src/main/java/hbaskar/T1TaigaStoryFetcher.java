@@ -13,6 +13,18 @@ import org.json.JSONObject;
 
 import hbaskar.one.PlanItPokerRepository;
 
+
+/**
+ * Fetches user stories and related data from the Taiga API for the PlanItPoker application.
+ * 
+ * This class handles authenticating to Taiga, retrieving the project ID based on a project slug,
+ * fetching backlog user stories, creating story cards, and storing them in the application repository.
+ * It also extracts and prints unique point and role IDs found in the fetched stories. 
+ * 
+ * @author hbaskar
+ * @version 1.0
+ */
+
 public class T1TaigaStoryFetcher {
 
     private static final String TAIGA_API = "https://api.taiga.io/api/v1";
