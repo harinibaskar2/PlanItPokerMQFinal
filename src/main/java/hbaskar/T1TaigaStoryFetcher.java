@@ -106,7 +106,7 @@ public class T1TaigaStoryFetcher {
         URL url = new URL(TAIGA_API + "/userstories?project=" + projectId);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestProperty("Authorization", "Bearer " + token);
-
+    
         BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         StringBuilder response = new StringBuilder();
         String line;
@@ -114,38 +114,53 @@ public class T1TaigaStoryFetcher {
             response.append(line);
         }
         reader.close();
-
+    
         JSONArray allStories = new JSONArray(response.toString());
         JSONArray backlogStories = new JSONArray();
-
+    
         System.out.println("Backlog stories:");
+        PlanItPokerRepository repo = PlanItPokerRepository.getInstance();
+    
         for (int i = 0; i < allStories.length(); i++) {
             JSONObject story = allStories.getJSONObject(i);
             if (story.isNull("milestone")) {
                 backlogStories.put(story);
-
+    
                 int id = story.getInt("id");
                 String subject = story.optString("subject", "(no title)");
+    
                 String responsible = "Unassigned";
-
                 if (!story.isNull("assigned_to_extra_info")) {
                     responsible = story.getJSONObject("assigned_to_extra_info")
                         .optString("full_name_display", "Unassigned");
                 }
-
-                String totalPoints = story.isNull("total_points")
-                    ? "—"
-                    : String.valueOf(story.getDouble("total_points"));
-
-                System.out.printf("• #%d - %s\n   Responsible: %s\n   Total Points: %s\n",
+    
+                double totalPoints = 0.0;
+                if (!story.isNull("total_points")) {
+                    totalPoints = story.getDouble("total_points");
+                }
+    
+                // Create the T1Card with assignedUser and totalPoints
+                T1Card card = new T1Card(
+                    "story_" + id,
+                    subject,
+                    "", // Description can be added if available in the JSON
+                    responsible,
+                    totalPoints
+                );
+    
+                // Add the story card to the current room in the repository
+                repo.addStoryToCurrentRoom(card);
+    
+                System.out.printf("• #%d - %s\n   Responsible: %s\n   Total Points: %.1f\n",
                     id, subject, responsible, totalPoints);
-
                 System.out.println();
             }
         }
-
+    
         return backlogStories;
     }
+    
 
     /**
      * Extracts and prints all unique roleIds and pointIds from the stories.

@@ -10,10 +10,10 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import hbaskar.T1Card;
 import hbaskar.one.PlanItPokerRepository;
 import hbaskar.one.PlanItPokerRepository.Room;
 import hbaskar.three.T1StoriesNanny;
-import hbaskar.T1Card;
 
 /*
  * This Panel Shows all the stories and turns them into buttons for the user to vote on the sizes of the stories.
@@ -24,19 +24,19 @@ import hbaskar.T1Card;
 
 public class T1StoriesPanel extends JPanel {
     private static JPanel storyCardsPanel;
-    
-        public T1StoriesPanel(T1StoriesNanny t1StoriesNanny) {
-            setLayout(new BorderLayout());
-    
-            storyCardsPanel = new JPanel();
-            storyCardsPanel.setLayout(new GridLayout(2, 5, 10, 10)); // 2 rows x 5 columns
-            add(storyCardsPanel, BorderLayout.CENTER);
-    
-            updateActiveStories();
-        }
-    
-        public void updateActiveStories() {
-            storyCardsPanel.removeAll();
+
+    public T1StoriesPanel(T1StoriesNanny t1StoriesNanny) {
+        setLayout(new BorderLayout());
+
+        storyCardsPanel = new JPanel();
+        storyCardsPanel.setLayout(new GridLayout(2, 5, 10, 10)); // 2 rows x 5 columns
+        add(storyCardsPanel, BorderLayout.CENTER);
+
+        updateActiveStories();
+    }
+
+    public void updateActiveStories() {
+        storyCardsPanel.removeAll();
 
         String currentRoomCode = PlanItPokerRepository.getInstance().getCurrentRoomCode();
         if (currentRoomCode == null) return;
@@ -49,24 +49,30 @@ public class T1StoriesPanel extends JPanel {
         int count = 0;
         for (T1Card card : stories) {
             JButton storyButton = createStoryButton(card);
-                        storyCardsPanel.add(storyButton);
-                        count++;
-                    }
-            
-                    // Pad the rest of the grid with empty placeholders if needed
-                    while (count < 10) {
-                        storyCardsPanel.add(new JPanel());
-                        count++;
-                    }
-            
-                    revalidate();
-                    repaint();
-                }
-            
-                private static JButton createStoryButton(T1Card card) {
+            storyCardsPanel.add(storyButton);
+            count++;
+        }
+
+        // Pad the rest of the grid with empty placeholders if needed
+        while (count < 10) {
+            storyCardsPanel.add(new JPanel());
+            count++;
+        }
+
+        revalidate();
+        repaint();
+    }
+
+    private static JButton createStoryButton(T1Card card) {
+        String assignedUser = card.getAssignedUser() != null ? card.getAssignedUser() : "Unassigned";
+        String totalPoints = String.format("%.2f", card.getTotalPoints());
+
         String label = "<html><b>" + card.getTitle() + "</b><br/>"
                      + card.getDescription() + "<br/>"
-                     + "Size: " + card.getAverageScore() + "</html>";
+                     + "Assigned to: " + assignedUser + "<br/>"
+                     + "Total Points: " + totalPoints + "<br/>"
+                     + "Size: " + card.getAverageScore()
+                     + "</html>";
 
         JButton button = new JButton(label);
         button.setPreferredSize(new Dimension(150, 100));

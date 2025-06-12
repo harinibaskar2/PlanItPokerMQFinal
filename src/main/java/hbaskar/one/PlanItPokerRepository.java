@@ -9,19 +9,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 import hbaskar.T1Card;
 
 /**
- * PlanItPokerRepository - Centralized data repository for Planning Poker application
- * 
- * This singleton class manages all room and story data using thread-safe collections.
- * Handles room creation, player management, story creation, and scoring operations.
- * Maintains current room and user state for session management.
+ * Singleton repository for managing PlanItPoker data including rooms, stories, and user sessions.
+ * Supports thread-safe operations for multi-user environments.
+ * Also manages Taiga project credentials and session data.
  * 
  * @author Daniel Miranda
  * @version 1.1
  * @since 2025
  */
-
 public class PlanItPokerRepository {
     private static PlanItPokerRepository instance;
+
     private final Map<String, Room> rooms;
     private final AtomicInteger roomCounter;
     private final AtomicInteger storyCounter;
@@ -30,7 +28,7 @@ public class PlanItPokerRepository {
     private String currentMode;
     private String loggedInUser;
 
-    // Taiga-related fields
+    // Taiga integration fields
     private String taigaUsername;
     private String taigaPassword;
     private String taigaProjectSlug;
@@ -50,7 +48,7 @@ public class PlanItPokerRepository {
         return instance;
     }
 
-    // User info
+    // User management
     public String getLoggedInUser() {
         return loggedInUser;
     }
@@ -59,7 +57,7 @@ public class PlanItPokerRepository {
         this.loggedInUser = username;
     }
 
-    // Room Management
+    // Room management
     public String createRoom(String roomName, String creatorName) {
         Room room = new Room(roomName, roomName, creatorName);
         rooms.put(roomName, room);
@@ -84,16 +82,16 @@ public class PlanItPokerRepository {
         return false;
     }
 
-    // Story Management
-    public String createStory(String roomCode, String title, String description) {
-        Room room = rooms.get(roomCode);
-        if (room != null) {
-            String storyId = "story_" + storyCounter.getAndIncrement();
-            T1Card story = new T1Card(storyId, title, description);
-            room.addStory(story);
-            return storyId;
+    // Story management
+
+    public void addStoryToCurrentRoom(T1Card card) {
+        String currentRoomCode = getCurrentRoomCode();
+        if (currentRoomCode != null) {
+            Room room = getRoom(currentRoomCode);
+            if (room != null) {
+                room.addStory(card);
+            }
         }
-        return null;
     }
 
     public void updateStoryScore(String roomCode, String storyId, String playerName, int score) {
@@ -134,8 +132,7 @@ public class PlanItPokerRepository {
         this.currentMode = currentMode;
     }
 
-    // --- Taiga credential management ---
-
+    // Taiga credential management
     public void setTaigaCredentials(String username, String password) {
         this.taigaUsername = username;
         this.taigaPassword = password;
@@ -181,13 +178,13 @@ public class PlanItPokerRepository {
         this.taigaProjectId = projectId;
     }
 
-    // --- Room Class ---
+    // Room inner class
     public static class Room {
-        private String code;
-        private String name;
-        private String creator;
-        private List<String> players;
-        private Map<String, T1Card> stories;
+        private final String code;
+        private final String name;
+        private final String creator;
+        private final List<String> players;
+        private final Map<String, T1Card> stories;
         private String scheduledTime;
 
         public Room(String code, String name, String creator) {
@@ -217,17 +214,28 @@ public class PlanItPokerRepository {
             return new ArrayList<>(stories.values());
         }
 
-        public void setScheduledTime(String time) {
-            this.scheduledTime = time;
-        }
-
         public String getScheduledTime() {
             return scheduledTime;
         }
 
-        public String getCode() { return code; }
-        public String getName() { return name; }
-        public String getCreator() { return creator; }
-        public List<String> getPlayers() { return new ArrayList<>(players); }
+        public void setScheduledTime(String time) {
+            this.scheduledTime = time;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getCreator() {
+            return creator;
+        }
+
+        public List<String> getPlayers() {
+            return new ArrayList<>(players);
+        }
     }
 }

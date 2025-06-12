@@ -17,9 +17,9 @@ import javax.swing.border.EmptyBorder;
  * @author hbaskar
  * ver 1.7 (Modified to remove manual story input)
  */
-public class T1StoriesPanel extends JPanel {
+public class T1TaigaPanel extends JPanel {
 
-    public T1StoriesPanel(T1StoriesNanny storiesNanny) {
+    public T1TaigaPanel(T1StoriesNanny storiesNanny) {
         setLayout(new BorderLayout(15, 15));
         setBackground(Color.WHITE);
         setBorder(new EmptyBorder(20, 20, 20, 20));

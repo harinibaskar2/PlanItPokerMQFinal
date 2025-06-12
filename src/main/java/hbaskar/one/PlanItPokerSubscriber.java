@@ -1,10 +1,20 @@
 package hbaskar.one;
 
-import org.eclipse.paho.client.mqttv3.*;
-import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-import com.google.gson.Gson;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
+
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+
+import com.google.gson.Gson;
+
 import hbaskar.T1Card;
 
 /**
@@ -160,19 +170,7 @@ public class PlanItPokerSubscriber implements MqttCallback {
         return success;
     }
     
-    public String createStory(String title, String description) {
-        String currentRoom = getCurrentRoomCode();
-        if (currentRoom != null) {
-            PlanItPokerRepository repo = getRepository();
-            String storyId = repo.createStory(currentRoom, title, description);
-            if (storyId != null) {
-                PlanItPokerPublisher publisher = PlanItPokerPublisher.getInstance();
-                publisher.publishStoryCreated(currentRoom, storyId, title, description);
-                return storyId;
-            }
-        }
-        return null;
-    }
+
     
     public void scoreStory(String storyId, int score) {
         String currentRoom = getCurrentRoomCode();
@@ -210,6 +208,9 @@ public class PlanItPokerSubscriber implements MqttCallback {
             publisher.publishModeChanged(currentRoom, newMode);
         }
     }
+
+
+
     
     // Get current data
     public List<String> getAvailableRooms() {

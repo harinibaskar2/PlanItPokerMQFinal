@@ -3,7 +3,7 @@ package hbaskar.two;
 import hbaskar.one.Main;
 import hbaskar.one.PlanItPokerRepository;
 import hbaskar.three.T1StoriesNanny;
-import hbaskar.three.T1StoriesPanel;
+import hbaskar.three.T1TaigaPanel;
 
 
 /**
@@ -64,7 +64,7 @@ public class T1CreateRoomNanny {
     public void switchToStoriesPanel() {
         main.setTitle("Stories");
         T1StoriesNanny storiesNanny = new T1StoriesNanny(main);
-        T1StoriesPanel storiesPanel = new T1StoriesPanel(storiesNanny);
+        T1TaigaPanel storiesPanel = new T1TaigaPanel(storiesNanny);
         main.setContentPane(storiesPanel);
         main.setSize(500, 500);
         main.revalidate();

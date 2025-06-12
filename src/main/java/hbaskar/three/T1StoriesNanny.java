@@ -23,20 +23,20 @@ import hbaskar.two.T1CreateRoomNanny;
  */
 public class T1StoriesNanny {
 
-    private T1StoriesPanel storiesPanel;
+    private T1TaigaPanel storiesPanel;
     private Main main;
     private PlanItPokerRepository repository = PlanItPokerRepository.getInstance();
 
     public T1StoriesNanny(Main main) {
         this.main = main;
-        this.storiesPanel = new T1StoriesPanel(this);
+        this.storiesPanel = new T1TaigaPanel(this);
     }
 
-    public T1StoriesNanny(T1StoriesPanel panel) {
+    public T1StoriesNanny(T1TaigaPanel panel) {
         this.storiesPanel = panel;
     }
 
-    public T1StoriesPanel getPanel() {
+    public T1TaigaPanel getPanel() {
         return storiesPanel;
     }
 
@@ -78,7 +78,7 @@ public class T1StoriesNanny {
                     JSONObject story = backlogStories.getJSONObject(i);
                     String title = story.optString("subject", "Untitled");
                     String description = story.optString("description", "(no description)");
-                    repository.createStory(roomCode, title, description);
+              
                 }
 
                 SwingUtilities.invokeLater(() -> {

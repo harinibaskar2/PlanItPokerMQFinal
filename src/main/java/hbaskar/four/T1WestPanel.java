@@ -174,13 +174,7 @@ public class T1WestPanel extends JPanel {
             }
 
             // Assuming createStory now only takes room and title (without description)
-            String storyId = repository.createStory(currentRoom, title, null); // pass null for description
-            if (storyId != null) {
-                JOptionPane.showMessageDialog(this, "Story created successfully! ID: " + storyId);
-                storyTitleField.setText("");
-            } else {
-                JOptionPane.showMessageDialog(this, "Failed to create story.");
-            }
+
         });
     }
 

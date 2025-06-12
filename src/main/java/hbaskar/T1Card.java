@@ -1,35 +1,41 @@
 package hbaskar;
 
-/*
- * Card Class:
- * The container for the story as well as all associated attributes
- * Ie:
- *  Id, Title, Description (The actual Story), All Votes, Avg Score, revealed status
- * 
- * @author DarienR5
- * */
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-// Need to contain:
+/*
+ * Card Class:
+ * The container for the story as well as all associated attributes
+ * Ie:
+ *  Id, Title, Description (The actual Story), Assigned User, Total Points, All Votes, Avg Score, revealed status
+ * 
+ * @author DarienR5
+ */
+
 public class T1Card {
     private String id;
     private String title;
     private String description;
+    private String assignedUser;
+    private double totalPoints;
     private Map<String, Integer> scores;
     private double averageScore;
     private boolean isRevealed;
 
-    public T1Card(String id, String title, String description) {
+    // Constructor with assignedUser and totalPoints
+    public T1Card(String id, String title, String description, String assignedUser, double totalPoints) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.assignedUser = assignedUser;
+        this.totalPoints = totalPoints;
         this.scores = new ConcurrentHashMap<>();
         this.averageScore = 0.0;
         this.isRevealed = false;
     }
+
+    // Existing methods
 
     public void addScore(String playerName, int score) {
         scores.put(playerName, score);
@@ -44,14 +50,51 @@ public class T1Card {
         }
     }
 
+    
 
-        // Getters and Setters
-    public String getId() { return id; }
-    public String getTitle() { return title; }
-    public String getDescription() { return description; }
-    public Map<String, Integer> getScores() { return new HashMap<>(scores); }
-    public double getAverageScore() { return averageScore; }
-    public boolean isRevealed() { return isRevealed; }
-    public void setRevealed(boolean revealed) { isRevealed = revealed; }
-        
+    // Getters and Setters
+
+    public String getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getAssignedUser() {
+        return assignedUser;
+    }
+
+    public void setAssignedUser(String assignedUser) {
+        this.assignedUser = assignedUser;
+    }
+
+    public double getTotalPoints() {
+        return totalPoints;
+    }
+
+    public void setTotalPoints(double totalPoints) {
+        this.totalPoints = totalPoints;
+    }
+
+    public Map<String, Integer> getScores() {
+        return new HashMap<>(scores);
+    }
+
+    public double getAverageScore() {
+        return averageScore;
+    }
+
+    public boolean isRevealed() {
+        return isRevealed;
+    }
+
+    public void setRevealed(boolean revealed) {
+        isRevealed = revealed;
+    }
 }
