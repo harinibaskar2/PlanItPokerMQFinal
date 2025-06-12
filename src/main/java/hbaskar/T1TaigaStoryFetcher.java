@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 import hbaskar.one.PlanItPokerRepository;
 
-public class TaigaStoryFetcher {
+public class T1TaigaStoryFetcher {
 
     private static final String TAIGA_API = "https://api.taiga.io/api/v1";
 public static void main(String[] args) throws Exception {

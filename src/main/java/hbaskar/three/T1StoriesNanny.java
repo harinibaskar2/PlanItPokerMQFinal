@@ -10,7 +10,7 @@ import javax.swing.SwingUtilities;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import hbaskar.TaigaStoryFetcher;
+import hbaskar.T1TaigaStoryFetcher;
 import hbaskar.four.T1DashboardNanny;
 import hbaskar.one.Main;
 import hbaskar.one.PlanItPokerRepository;
@@ -61,9 +61,9 @@ public class T1StoriesNanny {
             try {
                 SwingUtilities.invokeLater(() -> loadingDialog.setVisible(true));
 
-                String authToken = TaigaStoryFetcher.loginAndGetToken(username, password);
-                int projectId = TaigaStoryFetcher.getProjectId(authToken, projectSlug);
-                JSONArray backlogStories = TaigaStoryFetcher.fetchUserStories(authToken, projectId);
+                String authToken = T1TaigaStoryFetcher.loginAndGetToken(username, password);
+                int projectId = T1TaigaStoryFetcher.getProjectId(authToken, projectSlug);
+                JSONArray backlogStories = T1TaigaStoryFetcher.fetchUserStories(authToken, projectId);
 
                 String roomCode = repository.getCurrentRoomCode();
                 if (roomCode == null) {
