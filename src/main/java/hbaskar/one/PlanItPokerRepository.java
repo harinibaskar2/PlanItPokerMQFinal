@@ -16,7 +16,7 @@ import hbaskar.T1Card;
  * Maintains current room and user state for session management.
  * 
  * @author Daniel Miranda
- * @version 1.0
+ * @version 1.1
  * @since 2025
  */
 
@@ -26,16 +26,16 @@ public class PlanItPokerRepository {
     private final AtomicInteger roomCounter;
     private final AtomicInteger storyCounter;
 
-    // Add fields for current room and mode
     private String currentRoomCode;
     private String currentMode;
     private String loggedInUser;
 
-
-        private String taigaUsername;
+    // Taiga-related fields
+    private String taigaUsername;
     private String taigaPassword;
-
-
+    private String taigaProjectSlug;
+    private String taigaAuthToken;
+    private int taigaProjectId;
 
     private PlanItPokerRepository() {
         this.rooms = new ConcurrentHashMap<>();
@@ -50,7 +50,7 @@ public class PlanItPokerRepository {
         return instance;
     }
 
-
+    // User info
     public String getLoggedInUser() {
         return loggedInUser;
     }
@@ -58,26 +58,14 @@ public class PlanItPokerRepository {
     public void setLoggedInUser(String username) {
         this.loggedInUser = username;
     }
+
     // Room Management
     public String createRoom(String roomName, String creatorName) {
-        Room room = new Room(roomName, roomName, creatorName); // use roomName as both code and name
-        rooms.put(roomName, room); // store by roomName, not "room 1"
+        Room room = new Room(roomName, roomName, creatorName);
+        rooms.put(roomName, room);
         setCurrentRoomCode(roomName);
         return roomName;
     }
-    public void setTaigaCredentials(String username, String password) {
-        this.taigaUsername = username;
-        this.taigaPassword = password;
-    }
-    
-    public String getTaigaUsername() {
-        return taigaUsername;
-    }
-    
-    public String getTaigaPassword() {
-        return taigaPassword;
-    }
-    
 
     public Room getRoom(String roomCode) {
         return rooms.get(roomCode);
@@ -129,7 +117,7 @@ public class PlanItPokerRepository {
         }
     }
 
-    // Current room code getter/setter
+    // Current room and mode
     public String getCurrentRoomCode() {
         return currentRoomCode;
     }
@@ -138,7 +126,6 @@ public class PlanItPokerRepository {
         this.currentRoomCode = currentRoomCode;
     }
 
-    // Current mode getter/setter
     public String getCurrentMode() {
         return currentMode;
     }
@@ -146,9 +133,55 @@ public class PlanItPokerRepository {
     public void setCurrentMode(String currentMode) {
         this.currentMode = currentMode;
     }
-   
 
-    // Inner Classes
+    // --- Taiga credential management ---
+
+    public void setTaigaCredentials(String username, String password) {
+        this.taigaUsername = username;
+        this.taigaPassword = password;
+    }
+
+    public String getTaigaUsername() {
+        return taigaUsername;
+    }
+
+    public String getTaigaPassword() {
+        return taigaPassword;
+    }
+
+    public void setTaigaProjectSlug(String slug) {
+        this.taigaProjectSlug = slug;
+    }
+
+    public String getTaigaProjectSlug() {
+        return taigaProjectSlug;
+    }
+
+    public void setTaigaAuthToken(String token) {
+        this.taigaAuthToken = token;
+    }
+
+    public String getTaigaAuthToken() {
+        return taigaAuthToken;
+    }
+
+    public void setTaigaProjectId(int id) {
+        this.taigaProjectId = id;
+    }
+
+    public int getTaigaProjectId() {
+        return taigaProjectId;
+    }
+
+    public void setTaigaSession(String username, String password, String slug, String token, int projectId) {
+        this.taigaUsername = username;
+        this.taigaPassword = password;
+        this.taigaProjectSlug = slug;
+        this.taigaAuthToken = token;
+        this.taigaProjectId = projectId;
+    }
+
+    // --- Room Class ---
     public static class Room {
         private String code;
         private String name;
@@ -172,15 +205,6 @@ public class PlanItPokerRepository {
             }
         }
 
-        public void setScheduledTime(String time) {
-        this.scheduledTime = time;
-    }
-
-    public String getScheduledTime() {
-        return scheduledTime;
-    }
-
-
         public void addStory(T1Card story) {
             stories.put(story.getId(), story);
         }
@@ -193,12 +217,17 @@ public class PlanItPokerRepository {
             return new ArrayList<>(stories.values());
         }
 
-        // Getters
+        public void setScheduledTime(String time) {
+            this.scheduledTime = time;
+        }
+
+        public String getScheduledTime() {
+            return scheduledTime;
+        }
+
         public String getCode() { return code; }
         public String getName() { return name; }
         public String getCreator() { return creator; }
         public List<String> getPlayers() { return new ArrayList<>(players); }
     }
-
 }
-

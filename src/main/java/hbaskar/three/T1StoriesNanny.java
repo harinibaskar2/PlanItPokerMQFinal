@@ -84,7 +84,7 @@ public class T1StoriesNanny {
                 SwingUtilities.invokeLater(() -> {
                     loadingDialog.dispose();
                     JOptionPane.showMessageDialog(main, "Imported " + backlogStories.length() + " stories from Taiga.", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    backToStoriesPanel();
+                    switchToDashboard();  // <--- Switch here after import
                 });
 
             } catch (Exception e) {

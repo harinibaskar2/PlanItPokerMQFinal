@@ -8,19 +8,16 @@ import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 /**
- * Panel for creating a new story with a text field and import button.
+ * Panel for importing stories from Taiga.
  * 
  * @author hbaskar
- * ver 1.6
+ * ver 1.7 (Modified to remove manual story input)
  */
 public class T1StoriesPanel extends JPanel {
-
-    private JTextField storyField;
 
     public T1StoriesPanel(T1StoriesNanny storiesNanny) {
         setLayout(new BorderLayout(15, 15));
@@ -28,16 +25,10 @@ public class T1StoriesPanel extends JPanel {
         setBorder(new EmptyBorder(20, 20, 20, 20));
 
         // Title at top
-        JLabel titleLabel = new JLabel("Create New Story", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Import Stories", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 28));
         titleLabel.setForeground(new Color(50, 50, 50));
         add(titleLabel, BorderLayout.NORTH);
-
-        // Text field for story name/input
-        storyField = new JTextField();
-        storyField.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-        storyField.setPreferredSize(new Dimension(300, 40));
-        add(storyField, BorderLayout.CENTER);
 
         // Button to import from Taiga
         JButton importButton = new JButton("Import from Taiga");
@@ -52,20 +43,6 @@ public class T1StoriesPanel extends JPanel {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Color.WHITE);
         buttonPanel.add(importButton);
-        add(buttonPanel, BorderLayout.SOUTH);
-    }
-
-    /**
-     * @return text the user typed in the story field
-     */
-    public String getStoryText() {
-        return storyField.getText().trim();
-    }
-
-    /**
-     * Clear the story input field.
-     */
-    public void clearStoryField() {
-        storyField.setText("");
+        add(buttonPanel, BorderLayout.CENTER);  // moved to center since no text field
     }
 }

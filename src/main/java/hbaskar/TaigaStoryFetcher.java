@@ -1,86 +1,90 @@
-
 package hbaskar;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import hbaskar.one.PlanItPokerRepository;
+
 public class TaigaStoryFetcher {
 
     private static final String TAIGA_API = "https://api.taiga.io/api/v1";
-    private static final String USERNAME = "your_username";
-    private static final String PASSWORD = "your_password";
+public static void main(String[] args) throws Exception {
+    try {
+        PlanItPokerRepository repo = PlanItPokerRepository.getInstance();
 
-    public static void main(String[] args) throws Exception {
-        try {
-            String authToken = loginAndGetToken(USERNAME, PASSWORD);
+        String USERNAME = repo.getTaigaUsername();
+        String PASSWORD = repo.getTaigaPassword();
+        String projectSlug = repo.getTaigaProjectSlug();
 
-            // Example project slug; change this to your project slug
-            String projectSlug = "CSC307 - Team 06 - PlanningPoker";
-            int projectId = getProjectId(authToken, projectSlug);
-            System.out.println("Project ID for slug '" + projectSlug + "': " + projectId);
+        String authToken = loginAndGetToken(USERNAME, PASSWORD);
+        repo.setTaigaAuthToken(authToken);
 
-            // Fetch user stories for project
-            JSONArray stories = fetchUserStories(authToken, projectId);
+        int projectId = getProjectId(authToken, projectSlug);
+        repo.setTaigaProjectId(projectId);
 
-            // Example update method call (placeholder)
-            updateBacklogTotalPoints(authToken, stories, 5.0);
+        System.out.println("Project ID for slug '" + projectSlug + "': " + projectId);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        JSONArray stories = fetchUserStories(authToken, projectId);
+        extractUniquePointIds(stories);
+        updateBacklogTotalPoints(authToken, stories, 5.0);
+
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+}
+
 
     public static String loginAndGetToken(String username, String password) throws Exception {
-		URL url = new URL(TAIGA_API + "/auth");
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setRequestMethod("POST");
-		conn.setRequestProperty("Content-Type", "application/json");
-		conn.setDoOutput(true);
-	
-		String jsonInput = String.format(
-			"{\"type\": \"normal\", \"username\": \"%s\", \"password\": \"%s\"}",
-			username, password);
-	
-		try (OutputStream os = conn.getOutputStream()) {
-			os.write(jsonInput.getBytes());
-			os.flush();
-		}
-	
-		int responseCode = conn.getResponseCode();
-		InputStreamReader streamReader = new InputStreamReader(
-			responseCode == 200 ? conn.getInputStream() : conn.getErrorStream()
-		);
-		BufferedReader in = new BufferedReader(streamReader);
-	
-		StringBuilder response = new StringBuilder();
-		String line;
-		while ((line = in.readLine()) != null) {
-			response.append(line);
-		}
-		in.close();
-	
-		// Try parsing response only if it's JSON
-		try {
-			JSONObject json = new JSONObject(response.toString());
-	
-			if (responseCode != 200) {
-				String errorMessage = json.optString("_error_message",
-										json.optString("msg", "Unknown login error"));
-				throw new RuntimeException("Login failed: " + errorMessage);
-			}
-	
-			return json.getString("auth_token");
-		} catch (Exception e) {
-			throw new RuntimeException("Login failed, invalid response: " + response.toString());
-		}
-	}
-	
+        URL url = new URL(TAIGA_API + "/auth");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setDoOutput(true);
+
+        String jsonInput = String.format(
+            "{\"type\": \"normal\", \"username\": \"%s\", \"password\": \"%s\"}",
+            username, password);
+
+        try (OutputStream os = conn.getOutputStream()) {
+            os.write(jsonInput.getBytes());
+            os.flush();
+        }
+
+        int responseCode = conn.getResponseCode();
+        InputStreamReader streamReader = new InputStreamReader(
+            responseCode == 200 ? conn.getInputStream() : conn.getErrorStream()
+        );
+        BufferedReader in = new BufferedReader(streamReader);
+
+        StringBuilder response = new StringBuilder();
+        String line;
+        while ((line = in.readLine()) != null) {
+            response.append(line);
+        }
+        in.close();
+
+        try {
+            JSONObject json = new JSONObject(response.toString());
+
+            if (responseCode != 200) {
+                String errorMessage = json.optString("_error_message",
+                                        json.optString("msg", "Unknown login error"));
+                throw new RuntimeException("Login failed: " + errorMessage);
+            }
+
+            return json.getString("auth_token");
+        } catch (Exception e) {
+            throw new RuntimeException("Login failed, invalid response: " + response.toString());
+        }
+    }
 
     public static int getProjectId(String token, String projectSlug) throws Exception {
         URL url = new URL(TAIGA_API + "/projects/by_slug?slug=" + projectSlug);
@@ -174,11 +178,42 @@ public class TaigaStoryFetcher {
     }
 
     /**
-     * Placeholder method for updating backlog total points.
-     * You can implement it as per your needs.
+     * Extracts and prints all unique roleIds and pointIds from the stories.
      */
+    private static void extractUniquePointIds(JSONArray stories) {
+        Set<Integer> uniquePointIds = new HashSet<>();
+        Set<String> uniqueRoleIds = new HashSet<>();
+
+        for (int i = 0; i < stories.length(); i++) {
+            JSONObject story = stories.getJSONObject(i);
+            JSONObject pointsObj = story.optJSONObject("points");
+            if (pointsObj == null) continue;
+
+            for (String roleIdStr : pointsObj.keySet()) {
+                uniqueRoleIds.add(roleIdStr);
+
+                Object point = pointsObj.get(roleIdStr);
+                if (point instanceof Integer) {
+                    uniquePointIds.add((Integer) point);
+                    System.out.printf("Role ID: %s → Point ID: %d%n", roleIdStr, (Integer) point);
+                }
+            }
+        }
+
+        System.out.println("\n📌 Unique pointIds:");
+        for (int id : uniquePointIds) {
+            System.out.println("pointId: " + id);
+        }
+
+        System.out.println("\n👤 Unique roleIds:");
+        for (String id : uniqueRoleIds) {
+            System.out.println("roleId: " + id);
+        }
+    }
+
+
     public static void updateBacklogTotalPoints(String token, JSONArray stories, double newPoints) {
         System.out.println("Update backlog total points not implemented yet.");
-        // Implement your update logic here if needed
+        // Implement  update logic here if needed
     }
 }
