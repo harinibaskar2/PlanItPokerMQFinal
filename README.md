@@ -29,6 +29,8 @@ T1StoriesPanel
 T1StoriesNanny
 T1StoriesPanel
 T1Card
+logback.xml
+pom.xml(loggerdependencies)
 
 ✉️ Send estimates anonymously
 
