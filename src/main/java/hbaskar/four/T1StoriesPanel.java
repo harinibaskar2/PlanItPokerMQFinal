@@ -76,7 +76,11 @@ public class T1StoriesPanel extends JPanel {
 
         JButton button = new JButton(label);
         button.setPreferredSize(new Dimension(150, 100));
-        button.setBackground(new Color(220, 240, 255));
+
+        // Highlighted color (light yellow)
+        Color highlightColor = new Color(255, 255, 153); // light yellow
+        button.setBackground(highlightColor);
+        button.setOpaque(true); // ensure background color is painted
         button.setBorder(new LineBorder(Color.GRAY));
 
         button.addActionListener(e -> {
