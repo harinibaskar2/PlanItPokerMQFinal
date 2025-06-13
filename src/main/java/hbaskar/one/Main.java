@@ -2,9 +2,6 @@ package hbaskar.one;
 
 import javax.swing.JFrame;
 
-import hbaskar.three.T1StoriesNanny;
-import hbaskar.three.T1TaigaPanel;
-
 /**
  * Main class to create a JFrame and display the login panel.
  *
