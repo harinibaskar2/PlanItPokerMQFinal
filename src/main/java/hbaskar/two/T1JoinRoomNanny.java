@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 
 
 public class T1JoinRoomNanny {
-
+    private static final Logger logger = LoggerFactory.getLogger(T1JoinRoomNanny.class);
     private Main main;
 
     public T1JoinRoomNanny(Main main) {
@@ -39,7 +39,7 @@ public class T1JoinRoomNanny {
     }
 
     public boolean joinRoom(String roomName) {
-        System.out.println("Joining room: " + roomName);
+        logger.trace("Joining room: " + roomName);
 
         PlanItPokerRepository repo = PlanItPokerRepository.getInstance();
         String username = repo.getLoggedInUser();

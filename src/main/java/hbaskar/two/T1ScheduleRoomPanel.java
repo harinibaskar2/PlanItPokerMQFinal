@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 public class T1ScheduleRoomPanel extends JPanel {
     private T1CreateRoomNanny createRoomNanny;
+    private static final Logger logger = LoggerFactory.getLogger(T1ScheduleRoomPanel.class);
 
     public T1ScheduleRoomPanel(T1CreateRoomNanny createRoomNanny) {
         this.createRoomNanny = createRoomNanny;
@@ -67,9 +68,9 @@ public class T1ScheduleRoomPanel extends JPanel {
             Room room = repo.getRoom(currentRoomCode);
             if (room != null) {
                 room.setScheduledTime(time);
-                System.out.println("Scheduled time for room " + currentRoomCode + ": " + time);
+                logger.info("Scheduled time for room " + currentRoomCode + ": " + time);
             } else {
-                System.err.println("No room found to schedule time.");
+                logger.error("No room found to schedule time.");
             }
 
             createRoomNanny.switchToStoriesPanel();

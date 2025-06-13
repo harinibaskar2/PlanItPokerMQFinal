@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * to the user interface via the main application frame.
 
  * 
- * @author hbaskar
+ * @author DarienR5
  * @version 1.0
  */
 public class T1StoriesNanny {
@@ -63,7 +63,7 @@ public class T1StoriesNanny {
     public void importFromTaigaWithCredentials(String username, String password, String projectSlug) {
         repository.setTaigaCredentials(username, password);
 
-        System.out.println("Importing from Taiga for project: " + projectSlug);
+        logger.trace("Importing from Taiga for project: " + projectSlug);
 
         final JDialog loadingDialog = createLoadingDialog(main, "Importing stories from Taiga...");
 
@@ -115,7 +115,7 @@ public class T1StoriesNanny {
     }
 
     public void cancel() {
-        System.out.println("Cancelling story creation...");
+        logger.trace("Cancelling story creation...");
         switchToSchedule();
     }
 

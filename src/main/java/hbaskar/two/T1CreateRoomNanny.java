@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 
 
 public class T1CreateRoomNanny {
-
+    private static final Logger logger = LoggerFactory.getLogger(T1CreateRoomNanny.class);
     private Main main;
 
     public T1CreateRoomNanny(Main main) {
@@ -41,7 +41,7 @@ public class T1CreateRoomNanny {
     }
 
     public void createRoom(String name, String selectedItem) {
-        System.out.println("Creating room..." + name + ", mode: " + selectedItem);
+        logger.trace("Creating room..." + name + ", mode: " + selectedItem);
 
         PlanItPokerRepository repo = PlanItPokerRepository.getInstance();
 
