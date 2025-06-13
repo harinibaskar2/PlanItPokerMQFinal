@@ -16,6 +16,9 @@ import hbaskar.one.Main;
 import hbaskar.one.PlanItPokerRepository;
 import hbaskar.two.T1CreateRoomNanny;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Controller class responsible for managing the import of stories from Taiga
  * and handling UI transitions related to story management within the PlanItPoker application.
@@ -29,7 +32,7 @@ import hbaskar.two.T1CreateRoomNanny;
  * @version 1.0
  */
 public class T1StoriesNanny {
-
+    private static final Logger logger = LoggerFactory.getLogger(T1StoriesNanny.class);
     private T1TaigaPanel storiesPanel;
     private Main main;
     private PlanItPokerRepository repository = PlanItPokerRepository.getInstance();
@@ -48,7 +51,7 @@ public class T1StoriesNanny {
     }
 
     public void importStories() {
-        System.out.println("Opening Taiga login panel...");
+        logger.trace("Opening Taiga login panel...");
         main.setTitle("Login to Taiga");
 
         JPanel loginPanel = new T1TaigaLoginPanel(this);

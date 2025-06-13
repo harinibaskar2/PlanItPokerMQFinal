@@ -1,5 +1,13 @@
 package hbaskar.four;
+import hbaskar.T1Card;
 import hbaskar.one.Main;
+import hbaskar.one.PlanItPokerRepository;
+import hbaskar.one.PlanItPokerRepository.Room;
+
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * Watcher for the stories panel for it to catch all the stories and move around as well as update the stories
@@ -9,7 +17,7 @@ import hbaskar.one.Main;
  * 
  */
 public class T1DashboardNanny {
-
+    private static final Logger logger = LoggerFactory.getLogger(T1DashboardNanny.class);
     private T1StoriesPanel T1StoriesPanel;
     private Main main;  // Assuming you want to use Main in this class
 
@@ -32,7 +40,22 @@ public class T1DashboardNanny {
 
    
 	// This is the part that I wrote, everything above is a different member's work
-	public static void onSizePress(String value){
-		System.out.println("This is assigned to the current story" + value);
+	public static void onSizePress(String id ,String value){
+        int score;
+        if (value == "?"){
+            score =0;
+        } else if (value == "½"){
+            score =0;
+        }
+        else{
+            score = Integer.parseInt(value);
+        }
+         String currentRoomCode = PlanItPokerRepository.getInstance().getCurrentRoomCode();
+
+        Room room = PlanItPokerRepository.getInstance().getRoom(currentRoomCode);
+        List<T1Card> stories = room.getAllStories();
+        T1Card story=room.getStory(id);
+        story.addScore("guest", score);
+		logger.info("This is assigned to the current story" + value);
 	}
 }

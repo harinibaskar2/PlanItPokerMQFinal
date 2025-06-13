@@ -13,6 +13,9 @@ import org.json.JSONObject;
 
 import hbaskar.one.PlanItPokerRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * Fetches user stories and related data from the Taiga API for the PlanItPoker application.

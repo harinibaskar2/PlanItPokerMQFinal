@@ -14,6 +14,8 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import hbaskar.T1Card;
 
@@ -30,6 +32,7 @@ import hbaskar.T1Card;
  */
 
 public class PlanItPokerSubscriber implements MqttCallback {
+    private static final Logger logger = LoggerFactory.getLogger(PlanItPokerSubscriber.class);
     private MqttClient mqttClient;
     private final Gson gson;
     private final String broker = "tcp://test.mosquitto.org:1883"; // Change to your MQTT broker
@@ -60,12 +63,12 @@ public class PlanItPokerSubscriber implements MqttCallback {
             connOpts.setCleanSession(true);
             connOpts.setAutomaticReconnect(true);
             
-            System.out.println("Connecting to broker: " + broker);
+            logger.trace("Connecting to broker: " + broker);
             mqttClient.connect(connOpts);
-            System.out.println("Subscriber connected");
+            logger.trace("Subscriber connected");
             
         } catch (MqttException me) {
-            System.err.println("Failed to connect to MQTT broker: " + me.getMessage());
+            logger.error("Failed to connect to MQTT broker: " + me.getMessage());
             me.printStackTrace();
         }
     }
@@ -138,10 +141,10 @@ public class PlanItPokerSubscriber implements MqttCallback {
         try {
             if (mqttClient != null && mqttClient.isConnected()) {
                 mqttClient.subscribe(topic, 1); // QoS 1
-                System.out.println("Subscribed to topic: " + topic);
+                logger.trace("Subscribed to topic: " + topic);
             }
         } catch (MqttException me) {
-            System.err.println("Failed to subscribe to topic " + topic + ": " + me.getMessage());
+            logger.error("Failed to subscribe to topic " + topic + ": " + me.getMessage());
             me.printStackTrace();
         }
     }
@@ -236,7 +239,7 @@ public class PlanItPokerSubscriber implements MqttCallback {
     // MQTT Callback methods
     @Override
     public void connectionLost(Throwable cause) {
-        System.err.println("Connection lost: " + cause.getMessage());
+        logger.warn("Connection lost: " + cause.getMessage());
         // Attempt to reconnect
         connectToBroker();
     }
@@ -244,7 +247,7 @@ public class PlanItPokerSubscriber implements MqttCallback {
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         String messageStr = new String(message.getPayload());
-        System.out.println("Received message on topic " + topic + ": " + messageStr);
+        logger.trace("Received message on topic " + topic + ": " + messageStr);
         
         try {
             switch (topic) {
@@ -313,7 +316,7 @@ public class PlanItPokerSubscriber implements MqttCallback {
                     break;
             }
         } catch (Exception e) {
-            System.err.println("Error processing message: " + e.getMessage());
+            logger.error("Error processing message: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -328,10 +331,10 @@ public class PlanItPokerSubscriber implements MqttCallback {
         try {
             if (mqttClient != null && mqttClient.isConnected()) {
                 mqttClient.disconnect();
-                System.out.println("Subscriber disconnected");
+                logger.trace("Subscriber disconnected");
             }
         } catch (MqttException me) {
-            System.err.println("Failed to disconnect: " + me.getMessage());
+            logger.error("Failed to disconnect: " + me.getMessage());
         }
     }
     

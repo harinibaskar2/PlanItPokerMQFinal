@@ -14,6 +14,8 @@ import hbaskar.T1Card;
 import hbaskar.one.PlanItPokerRepository;
 import hbaskar.one.PlanItPokerRepository.Room;
 import hbaskar.three.T1StoriesNanny;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * This Panel Shows all the stories and turns them into buttons for the user to vote on the sizes of the stories.
@@ -23,8 +25,10 @@ import hbaskar.three.T1StoriesNanny;
  */
 
 public class T1StoriesPanel extends JPanel {
+    private static final Logger logger = LoggerFactory.getLogger(T1StoriesPanel.class);
     private static JPanel storyCardsPanel;
     public Object storyTextArea;
+    public String id;
     
         public T1StoriesPanel(T1StoriesNanny t1StoriesNanny) {
             setLayout(new BorderLayout());
@@ -64,9 +68,10 @@ public class T1StoriesPanel extends JPanel {
         repaint();
     }
 
-    private static JButton createStoryButton(T1Card card) {
+    private JButton createStoryButton(T1Card card) {
         String assignedUser = card.getAssignedUser() != null ? card.getAssignedUser() : "Unassigned";
         String totalPoints = String.format("%.2f", card.getTotalPoints());
+       
 
         String label = "<html><b>" + card.getTitle() + "</b><br/>"
                      + card.getDescription() + "<br/>"
@@ -85,10 +90,11 @@ public class T1StoriesPanel extends JPanel {
         button.setBorder(new LineBorder(Color.GRAY));
 
         button.addActionListener(e -> {
-            System.out.println("Clicked story: " + card.getTitle());
-            // You can add further action here like highlighting or editing
+            logger.info("Clicked story: " + card.getTitle());
+            this.id = card.getId();
         });
 
         return button;
     }
+    
 }

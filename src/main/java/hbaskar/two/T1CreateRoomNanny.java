@@ -5,6 +5,9 @@ import hbaskar.one.PlanItPokerRepository;
 import hbaskar.three.T1StoriesNanny;
 import hbaskar.three.T1TaigaPanel;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * This class manages the creation of a new room in the PlanItPoker application.

@@ -9,6 +9,8 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * PlanItPokerPublisher - MQTT publisher for real-time game events
@@ -23,6 +25,8 @@ import com.google.gson.Gson;
  */
 
 public class PlanItPokerPublisher {
+    private static final Logger logger = LoggerFactory.getLogger(PlanItPokerPublisher.class);
+
     private static PlanItPokerPublisher instance;
     private MqttClient mqttClient;
     private final Gson gson;
@@ -60,12 +64,12 @@ public class PlanItPokerPublisher {
             connOpts.setCleanSession(true);
             connOpts.setAutomaticReconnect(true);
             
-            System.out.println("Connecting to broker: " + broker);
+            logger.trace("Connecting to broker: " + broker);
             mqttClient.connect(connOpts);
-            System.out.println("Publisher connected");
+            logger.trace("Publisher connected");
             
         } catch (MqttException me) {
-            System.err.println("Failed to connect to MQTT broker: " + me.getMessage());
+            logger.error("Failed to connect to MQTT broker: " + me.getMessage());
             me.printStackTrace();
         }
     }

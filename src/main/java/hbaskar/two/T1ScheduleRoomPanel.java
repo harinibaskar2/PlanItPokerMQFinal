@@ -11,6 +11,8 @@ import javax.swing.SwingConstants;
 
 import hbaskar.one.PlanItPokerRepository;
 import hbaskar.one.PlanItPokerRepository.Room;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class provides a panel UI for scheduling a time slot for a created room

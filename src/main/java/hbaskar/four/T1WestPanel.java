@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import hbaskar.one.PlanItPokerRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -33,6 +35,7 @@ import hbaskar.one.PlanItPokerRepository;
  */
 
 public class T1WestPanel extends JPanel {
+    private static final Logger logger = LoggerFactory.getLogger(T1WestPanel.class);
 
     private JComboBox<String> roomSelector;
     private JComboBox<String> inviteRoomSelector; // Changed from JTextField to JComboBox
@@ -193,7 +196,7 @@ public class T1WestPanel extends JPanel {
         String currentRoom = repository.getCurrentRoomCode();
         if (currentRoom != null) {
             List<String> names = repository.getRoom(currentRoom).getPlayers();
-            System.out.println("Players in room " + currentRoom + ": " + names);
+            logger.info("Players in room " + currentRoom + ": " + names);
             for (String name : names) {
                 JLabel nameLabel = new JLabel(name + " just entered the room");
                 nameLabel.setFont(new Font("Arial", Font.PLAIN, 12));

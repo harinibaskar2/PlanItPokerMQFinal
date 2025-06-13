@@ -7,6 +7,8 @@ import java.awt.GridLayout;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Panel that displays the cards used for estimating.
@@ -15,7 +17,8 @@ import javax.swing.JPanel;
  * ver 1.1
  */
 public class CardsPanel extends JPanel {
-	
+	private static final Logger logger = LoggerFactory.getLogger(CardsPanel.class);
+
 	private static final String[] CARD_VALUES = {
 		"0", "½", "1", "2", "3", "5", "8", "20", "40", "10", "0", "?"
 	};
@@ -28,8 +31,7 @@ public class CardsPanel extends JPanel {
 			card.setFont(new Font("SansSerif", Font.BOLD, 20));
 			add(card);
 			card.addActionListener(e->{
-				System.out.println(value);
-				T1DashboardNanny.onSizePress(value);
+				logger.info(value);
 			});
 		}
 	}

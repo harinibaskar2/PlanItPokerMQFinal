@@ -3,6 +3,8 @@ package hbaskar.one;
 import hbaskar.two.T1CreateRoomNanny;
 import hbaskar.two.T1JoinRoomNanny;
 import hbaskar.two.T1RoomPanel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Handles the login and room entry logic for the PlanItPoker application.
@@ -18,7 +20,7 @@ import hbaskar.two.T1RoomPanel;
 
 
 public class T1LoginNanny {
-
+    private static final Logger logger = LoggerFactory.getLogger(T1LoginNanny.class);
     private Main main;
     private PlanItPokerRepository repository = PlanItPokerRepository.getInstance();
 
@@ -27,13 +29,13 @@ public class T1LoginNanny {
     }
 
     public void enterRoom(String name) {
-        System.out.println(name + " Entering a room...");
+        logger.trace(name + " Entering a room...");
         login(name);
         switchGUI();
     }
 
     public void login(String name) {
-        System.out.println(name + " Logging in...");
+        logger.trace(name + " Logging in...");
 
         // Store user in repository for global access
         repository.setLoggedInUser(name);

@@ -1,5 +1,5 @@
 <configuration>
-<import class = "ch.qos.logback.classic.encoder.PatternLayourEncoder"/>
+<import class = "ch.qos.logback.classic.encoder.PatternLayoutEncoder"/>
 <import class = "ch.qos.logback.core.ConsoleAppender"/>
 
 <appender name="CONSOLE_TEXT" class="ConsoleAppender">
