@@ -11,17 +11,20 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 import hbaskar.T1Card;
-import hbaskar.one.PlanItPokerRepository;
-import hbaskar.one.PlanItPokerRepository.Room;
+import hbaskar.one.T1PlanItPokerRepository;
+import hbaskar.one.T1PlanItPokerRepository.Room;
 import hbaskar.three.T1StoriesNanny;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/*
- * This Panel Shows all the stories and turns them into buttons for the user to vote on the sizes of the stories.
- * Over the course, it updates the active stories to do this
+/**
+ * Panel displaying all active stories as buttons for users to vote on story sizes.
+ * <p>
+ * The panel dynamically updates to show the current active stories in the
+ * selected room and provides UI controls for story interaction.
+ * </p>
  * 
- * @Darien
+ * @author DarienR5
  */
 
 public class T1StoriesPanel extends JPanel {
@@ -43,10 +46,10 @@ public class T1StoriesPanel extends JPanel {
         public void updateActiveStories() {
             storyCardsPanel.removeAll();
 
-        String currentRoomCode = PlanItPokerRepository.getInstance().getCurrentRoomCode();
+        String currentRoomCode = T1PlanItPokerRepository.getInstance().getCurrentRoomCode();
         if (currentRoomCode == null) return;
 
-        Room room = PlanItPokerRepository.getInstance().getRoom(currentRoomCode);
+        Room room = T1PlanItPokerRepository.getInstance().getRoom(currentRoomCode);
         if (room == null) return;
 
         List<T1Card> stories = room.getAllStories();

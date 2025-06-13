@@ -1,7 +1,7 @@
 package hbaskar.two;
 
 import hbaskar.one.Main;
-import hbaskar.one.PlanItPokerRepository;
+import hbaskar.one.T1PlanItPokerRepository;
 import hbaskar.three.T1StoriesNanny;
 import hbaskar.three.T1TaigaPanel;
 
@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 
 
 public class T1CreateRoomNanny {
-
+    private static final Logger logger = LoggerFactory.getLogger(T1CreateRoomNanny.class);
     private Main main;
 
     public T1CreateRoomNanny(Main main) {
@@ -41,9 +41,9 @@ public class T1CreateRoomNanny {
     }
 
     public void createRoom(String name, String selectedItem) {
-        System.out.println("Creating room..." + name + ", mode: " + selectedItem);
+        logger.trace("Creating room..." + name + ", mode: " + selectedItem);
 
-        PlanItPokerRepository repo = PlanItPokerRepository.getInstance();
+        T1PlanItPokerRepository repo = T1PlanItPokerRepository.getInstance();
 
         // Get the actual logged in user from the repository
         String creatorName = repo.getLoggedInUser();

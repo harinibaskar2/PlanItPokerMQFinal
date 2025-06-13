@@ -11,7 +11,7 @@ import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import hbaskar.one.PlanItPokerRepository;
+import hbaskar.one.T1PlanItPokerRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,12 +29,12 @@ import org.slf4j.LoggerFactory;
  */
 
 public class T1TaigaStoryFetcher {
-
+    private static final Logger logger = LoggerFactory.getLogger(T1TaigaStoryFetcher.class);
     private static final String TAIGA_API = "https://api.taiga.io/api/v1";
 
     public static void main(String[] args) throws Exception {
         try {
-            PlanItPokerRepository repo = PlanItPokerRepository.getInstance();
+            T1PlanItPokerRepository repo = T1PlanItPokerRepository.getInstance();
 
             String USERNAME = repo.getTaigaUsername();
             String PASSWORD = repo.getTaigaPassword();
@@ -46,7 +46,7 @@ public class T1TaigaStoryFetcher {
             int projectId = getProjectId(authToken, projectSlug);
             repo.setTaigaProjectId(projectId);
 
-            System.out.println("Project ID for slug '" + projectSlug + "': " + projectId);
+            logger.trace("Project ID for slug '" + projectSlug + "': " + projectId);
 
             JSONArray stories = fetchUserStories(authToken, projectId);
             extractUniquePointIds(stories);
@@ -133,8 +133,8 @@ public class T1TaigaStoryFetcher {
         JSONArray allStories = new JSONArray(response.toString());
         JSONArray backlogStories = new JSONArray();
     
-        System.out.println("Backlog stories:");
-        PlanItPokerRepository repo = PlanItPokerRepository.getInstance();
+        logger.info("Backlog stories:");
+        T1PlanItPokerRepository repo = T1PlanItPokerRepository.getInstance();
     
         for (int i = 0; i < allStories.length(); i++) {
             JSONObject story = allStories.getJSONObject(i);
@@ -167,9 +167,9 @@ public class T1TaigaStoryFetcher {
                 // Add the story card to the current room in the repository
                 repo.addStoryToCurrentRoom(card);
     
-                System.out.printf("• #%d - %s\n   Responsible: %s\n   Total Points: %.1f\n",
+                logger.info("• #%d - %s\n   Responsible: %s\n   Total Points: %.1f\n",
                     id, subject, responsible, totalPoints);
-                System.out.println();
+                
             }
         }
     
@@ -200,14 +200,14 @@ public class T1TaigaStoryFetcher {
             }
         }
 
-        System.out.println("\n📌 Unique pointIds:");
+        logger.trace("\n📌 Unique pointIds:");
         for (int id : uniquePointIds) {
-            System.out.println("pointId: " + id);
+            logger.trace("pointId: " + id);
         }
 
-        System.out.println("\n👤 Unique roleIds:");
+        logger.trace("\n👤 Unique roleIds:");
         for (String id : uniqueRoleIds) {
-            System.out.println("roleId: " + id);
+            logger.trace("roleId: " + id);
         }
     }
 }

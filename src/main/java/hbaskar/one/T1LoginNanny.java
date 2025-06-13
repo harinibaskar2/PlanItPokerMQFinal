@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 public class T1LoginNanny {
     private static final Logger logger = LoggerFactory.getLogger(T1LoginNanny.class);
     private Main main;
-    private PlanItPokerRepository repository = PlanItPokerRepository.getInstance();
+    private T1PlanItPokerRepository repository = T1PlanItPokerRepository.getInstance();
 
     public T1LoginNanny(Main main) {
         this.main = main;
@@ -63,7 +63,7 @@ public class T1LoginNanny {
         T1CreateRoomNanny createRoomNanny = new T1CreateRoomNanny(main);
 
         // Get logged in user name (if needed)
-        String username = PlanItPokerRepository.getInstance().getLoggedInUser();
+        String username = T1PlanItPokerRepository.getInstance().getLoggedInUser();
 
         // Create the combined panel with both create & join UI
         T1RoomPanel roomPanel = new T1RoomPanel(username, createRoomNanny, joinRoomNanny);

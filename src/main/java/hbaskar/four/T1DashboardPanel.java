@@ -4,12 +4,16 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 
-import hbaskar.one.PlanItPokerRepository;
+import hbaskar.one.T1PlanItPokerRepository;
 import hbaskar.three.T1StoriesNanny;
 
 /**
- * Integrates a dashboard with the cards, timer, and stories.
- *
+ * The main dashboard panel that integrates the cards panel, timer, and stories panel.
+ * 
+ * This panel uses T1StoriesNanny for story management and initializes
+ * sub-panels for stories, cards, and controls for the selected user and room.
+ * 
+ * 
  * @author Darien
  * ver 1.1 - Added component connections for story scoring
  */
@@ -27,11 +31,11 @@ public class T1DashboardPanel extends JPanel {
         CardsPanel cardsPanel = new CardsPanel();
         cardsPanel.setStoriesPanel(storiesPanel);
 
-        // Get the latest player from PlanItPokerRepository current room
-        String currentRoomCode = PlanItPokerRepository.getInstance().getCurrentRoomCode();
+        // Get the latest player from T1PlanItPokerRepository current room
+        String currentRoomCode = T1PlanItPokerRepository.getInstance().getCurrentRoomCode();
         String username = null;
         if (currentRoomCode != null) {
-            var room = PlanItPokerRepository.getInstance().getRoom(currentRoomCode);
+            var room = T1PlanItPokerRepository.getInstance().getRoom(currentRoomCode);
             if (room != null && !room.getPlayers().isEmpty()) {
                 username = room.getPlayers().get(0);
             }

@@ -1,20 +1,26 @@
 package hbaskar.four;
 import hbaskar.T1Card;
 import hbaskar.one.Main;
-import hbaskar.one.PlanItPokerRepository;
-import hbaskar.one.PlanItPokerRepository.Room;
+import hbaskar.one.T1PlanItPokerRepository;
+import hbaskar.one.T1PlanItPokerRepository.Room;
 
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/*
- * Watcher for the stories panel for it to catch all the stories and move around as well as update the stories
+/**
+ * Manages and coordinates interactions within the PlanItPoker dashboard,
+ * particularly handling updates and events related to the stories panel.
  * 
- * author @DarienR5
+ * This class listens for room selection changes, updates the stories displayed,
+ * and processes user actions such as scoring story cards.</p>
+ * 
+ * It interacts with {@link T1StoriesPanel} to refresh UI elements and uses
+ * {@link T1PlanItPokerRepository} to access and modify story data for the current room.</p>
  * 
  * 
+ * @author DarienR5
  */
 public class T1DashboardNanny {
     private static final Logger logger = LoggerFactory.getLogger(T1DashboardNanny.class);
@@ -48,8 +54,8 @@ public class T1DashboardNanny {
             score = Integer.parseInt(value);
         }
         
-        String currentRoomCode = PlanItPokerRepository.getInstance().getCurrentRoomCode();
-        Room room = PlanItPokerRepository.getInstance().getRoom(currentRoomCode);
+        String currentRoomCode = T1PlanItPokerRepository.getInstance().getCurrentRoomCode();
+        Room room = T1PlanItPokerRepository.getInstance().getRoom(currentRoomCode);
         List<T1Card> stories = room.getAllStories();
         T1Card story = room.getStory(id);
         

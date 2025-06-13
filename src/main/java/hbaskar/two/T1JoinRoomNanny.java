@@ -1,7 +1,7 @@
 package hbaskar.two;
 
 import hbaskar.one.Main;
-import hbaskar.one.PlanItPokerRepository;
+import hbaskar.one.T1PlanItPokerRepository;
 import hbaskar.three.T1StoriesNanny;
 import hbaskar.three.T1TaigaPanel;
 
@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 
 
 public class T1JoinRoomNanny {
-
+    private static final Logger logger = LoggerFactory.getLogger(T1JoinRoomNanny.class);
     private Main main;
 
     public T1JoinRoomNanny(Main main) {
@@ -39,9 +39,9 @@ public class T1JoinRoomNanny {
     }
 
     public boolean joinRoom(String roomName) {
-        System.out.println("Joining room: " + roomName);
+        logger.trace("Joining room: " + roomName);
 
-        PlanItPokerRepository repo = PlanItPokerRepository.getInstance();
+        T1PlanItPokerRepository repo = T1PlanItPokerRepository.getInstance();
         String username = repo.getLoggedInUser();
 
         boolean success = repo.joinRoom(roomName, username);

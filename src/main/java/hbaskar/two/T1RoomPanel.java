@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import hbaskar.one.PlanItPokerRepository;
+import hbaskar.one.T1PlanItPokerRepository;
 
 /**
  * This class provides the user interface panel for both creating and joining rooms 
@@ -30,7 +30,7 @@ import hbaskar.one.PlanItPokerRepository;
 
 public class T1RoomPanel extends JPanel {
 
-    private PlanItPokerRepository repository = PlanItPokerRepository.getInstance();
+    private T1PlanItPokerRepository repository = T1PlanItPokerRepository.getInstance();
 
     public T1RoomPanel(String username, T1CreateRoomNanny createRoomNanny, T1JoinRoomNanny joinRoomNanny) {
         setLayout(new GridLayout(7, 1, 10, 10)); // rows, cols, hgap, vgap

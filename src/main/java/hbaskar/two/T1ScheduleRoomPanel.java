@@ -9,8 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import hbaskar.one.PlanItPokerRepository;
-import hbaskar.one.PlanItPokerRepository.Room;
+import hbaskar.one.T1PlanItPokerRepository;
+import hbaskar.one.T1PlanItPokerRepository.Room;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 public class T1ScheduleRoomPanel extends JPanel {
     private T1CreateRoomNanny createRoomNanny;
+    private static final Logger logger = LoggerFactory.getLogger(T1ScheduleRoomPanel.class);
 
     public T1ScheduleRoomPanel(T1CreateRoomNanny createRoomNanny) {
         this.createRoomNanny = createRoomNanny;
@@ -62,14 +63,14 @@ public class T1ScheduleRoomPanel extends JPanel {
             String time = (String) timeCombo.getSelectedItem();
 
             // Use repository instead of Blackboard
-            PlanItPokerRepository repo = PlanItPokerRepository.getInstance();
+            T1PlanItPokerRepository repo = T1PlanItPokerRepository.getInstance();
             String currentRoomCode = repo.getCurrentRoomCode();
             Room room = repo.getRoom(currentRoomCode);
             if (room != null) {
                 room.setScheduledTime(time);
-                System.out.println("Scheduled time for room " + currentRoomCode + ": " + time);
+                logger.info("Scheduled time for room " + currentRoomCode + ": " + time);
             } else {
-                System.err.println("No room found to schedule time.");
+                logger.error("No room found to schedule time.");
             }
 
             createRoomNanny.switchToStoriesPanel();

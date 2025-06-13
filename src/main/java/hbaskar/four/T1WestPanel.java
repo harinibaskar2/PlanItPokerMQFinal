@@ -15,7 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import hbaskar.T1Card;
-import hbaskar.one.PlanItPokerRepository;
+import hbaskar.one.T1PlanItPokerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +40,7 @@ public class T1WestPanel extends JPanel {
     private JComboBox<String> roomSelector;
     private JComboBox<String> inviteRoomSelector; // Changed from JTextField to JComboBox
     private JPanel playersPanel;
-    private PlanItPokerRepository repository = PlanItPokerRepository.getInstance();
+    private T1PlanItPokerRepository repository = T1PlanItPokerRepository.getInstance();
 
     private JTextField inviteNameField;
     private JButton inviteButton;
@@ -201,7 +201,7 @@ public class T1WestPanel extends JPanel {
             return;
         }
 
-        PlanItPokerRepository.Room room = repository.getRoom(currentRoom);
+        T1PlanItPokerRepository.Room room = repository.getRoom(currentRoom);
         if (room == null) {
             JOptionPane.showMessageDialog(this, "Room not found.", "Error", JOptionPane.ERROR_MESSAGE);
             return;

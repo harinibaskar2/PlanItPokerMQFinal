@@ -4,11 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/*
- * Card Class:
- * The container for the story as well as all associated attributes
- * Ie:
- *  Id, Title, Description (The actual Story), Assigned User, Total Points, All Votes, Avg Score, revealed status
+/**
+ * Represents a story card in the planning poker system,
+ * containing details such as the story ID, title, description,
+ * assigned user, total points, votes by players, average score, 
+ * and whether the card's score is revealed.
+ * 
+ * <p>This class provides methods to add scores from players,
+ * calculate the average score from all votes, and manage
+ * the state of the card.</p>
+ * 
+ * <p>Thread-safe concurrent map is used to store votes from players.</p>
  * 
  * @author DarienR5
  */

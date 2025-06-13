@@ -14,9 +14,10 @@ import java.util.List;
  * Dialog that displays a chart of all stories with their average scores.
  * Shows story titles, average scores, and provides visual representation.
  * 
- * @author Generated for PlanItPoker
+ * @author Daniel M
  * @version 1.0
  */
+
 public class T1StoriesChartDialog extends JDialog {
     private static final Logger logger = LoggerFactory.getLogger(T1StoriesChartDialog.class);
     private List<T1Card> stories;

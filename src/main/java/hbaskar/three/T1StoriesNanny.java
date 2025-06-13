@@ -13,7 +13,7 @@ import org.json.JSONObject;
 import hbaskar.T1TaigaStoryFetcher;
 import hbaskar.four.T1DashboardNanny;
 import hbaskar.one.Main;
-import hbaskar.one.PlanItPokerRepository;
+import hbaskar.one.T1PlanItPokerRepository;
 import hbaskar.two.T1CreateRoomNanny;
 
 import org.slf4j.Logger;
@@ -28,14 +28,14 @@ import org.slf4j.LoggerFactory;
  * to the user interface via the main application frame.
 
  * 
- * @author hbaskar
+ * @author DarienR5
  * @version 1.0
  */
 public class T1StoriesNanny {
     private static final Logger logger = LoggerFactory.getLogger(T1StoriesNanny.class);
     private T1TaigaPanel storiesPanel;
     private Main main;
-    private PlanItPokerRepository repository = PlanItPokerRepository.getInstance();
+    private T1PlanItPokerRepository repository = T1PlanItPokerRepository.getInstance();
 
     public T1StoriesNanny(Main main) {
         this.main = main;
@@ -63,7 +63,7 @@ public class T1StoriesNanny {
     public void importFromTaigaWithCredentials(String username, String password, String projectSlug) {
         repository.setTaigaCredentials(username, password);
 
-        System.out.println("Importing from Taiga for project: " + projectSlug);
+        logger.trace("Importing from Taiga for project: " + projectSlug);
 
         final JDialog loadingDialog = createLoadingDialog(main, "Importing stories from Taiga...");
 
@@ -115,7 +115,7 @@ public class T1StoriesNanny {
     }
 
     public void cancel() {
-        System.out.println("Cancelling story creation...");
+        logger.trace("Cancelling story creation...");
         switchToSchedule();
     }
 

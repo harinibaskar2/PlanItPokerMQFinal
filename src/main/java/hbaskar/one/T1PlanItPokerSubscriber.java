@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import hbaskar.T1Card;
 
 /**
- * PlanItPokerSubscriber - MQTT subscriber for receiving and processing game events
+ * T1PlanItPokerRepository - MQTT subscriber for receiving and processing game events
  * 
  * This class receives real-time game events from MQTT broker and updates the UI accordingly.
  * Filters events by current room, handles JSON deserialization, and provides callback mechanisms.
@@ -31,23 +31,23 @@ import hbaskar.T1Card;
  * @since 2025
  */
 
-public class PlanItPokerSubscriber implements MqttCallback {
-    private static final Logger logger = LoggerFactory.getLogger(PlanItPokerSubscriber.class);
+public class T1PlanItPokerSubscriber implements MqttCallback {
+    private static final Logger logger = LoggerFactory.getLogger(T1PlanItPokerSubscriber.class);
     private MqttClient mqttClient;
     private final Gson gson;
     private final String broker = "tcp://test.mosquitto.org:1883"; // Change to your MQTT broker
     private final String clientId;
     
     // Event handlers
-    private Consumer<PlanItPokerPublisher.RoomEvent> roomCreatedHandler;
-    private Consumer<PlanItPokerPublisher.PlayerEvent> playerJoinedHandler;
-    private Consumer<PlanItPokerPublisher.StoryEvent> storyCreatedHandler;
-    private Consumer<PlanItPokerPublisher.ScoreEvent> storyStoredHandler;
-    private Consumer<PlanItPokerPublisher.RevealEvent> cardsRevealedHandler;
-    private Consumer<PlanItPokerPublisher.RoomsUpdatedEvent> roomsUpdatedHandler;
-    private Consumer<PlanItPokerPublisher.ModeEvent> modeChangedHandler;
+    private Consumer<T1PlanItPokerPublisher.RoomEvent> roomCreatedHandler;
+    private Consumer<T1PlanItPokerPublisher.PlayerEvent> playerJoinedHandler;
+    private Consumer<T1PlanItPokerPublisher.StoryEvent> storyCreatedHandler;
+    private Consumer<T1PlanItPokerPublisher.ScoreEvent> storyStoredHandler;
+    private Consumer<T1PlanItPokerPublisher.RevealEvent> cardsRevealedHandler;
+    private Consumer<T1PlanItPokerPublisher.RoomsUpdatedEvent> roomsUpdatedHandler;
+    private Consumer<T1PlanItPokerPublisher.ModeEvent> modeChangedHandler;
     
-    public PlanItPokerSubscriber() {
+    public T1PlanItPokerSubscriber() {
         this.gson = new Gson();
         this.clientId = "Subscriber_" + UUID.randomUUID().toString();
         connectToBroker();
@@ -74,8 +74,8 @@ public class PlanItPokerSubscriber implements MqttCallback {
     }
     
     // Get repository and current room info
-    private PlanItPokerRepository getRepository() {
-        return PlanItPokerRepository.getInstance();
+    private T1PlanItPokerRepository getRepository() {
+        return T1PlanItPokerRepository.getInstance();
     }
     
     private String getCurrentRoomCode() {
@@ -87,45 +87,45 @@ public class PlanItPokerSubscriber implements MqttCallback {
     }
     
     // Subscribe to room creation events
-    public void subscribeToRoomCreated(Consumer<PlanItPokerPublisher.RoomEvent> callback) {
+    public void subscribeToRoomCreated(Consumer<T1PlanItPokerPublisher.RoomEvent> callback) {
         this.roomCreatedHandler = callback;
-        subscribeToTopic(PlanItPokerPublisher.TOPIC_ROOM_CREATED);
+        subscribeToTopic(T1PlanItPokerPublisher.TOPIC_ROOM_CREATED);
     }
     
     // Subscribe to player joined events
-    public void subscribeToPlayerJoined(Consumer<PlanItPokerPublisher.PlayerEvent> callback) {
+    public void subscribeToPlayerJoined(Consumer<T1PlanItPokerPublisher.PlayerEvent> callback) {
         this.playerJoinedHandler = callback;
-        subscribeToTopic(PlanItPokerPublisher.TOPIC_PLAYER_JOINED);
+        subscribeToTopic(T1PlanItPokerPublisher.TOPIC_PLAYER_JOINED);
     }
     
     // Subscribe to story creation events
-    public void subscribeToStoryCreated(Consumer<PlanItPokerPublisher.StoryEvent> callback) {
+    public void subscribeToStoryCreated(Consumer<T1PlanItPokerPublisher.StoryEvent> callback) {
         this.storyCreatedHandler = callback;
-        subscribeToTopic(PlanItPokerPublisher.TOPIC_STORY_CREATED);
+        subscribeToTopic(T1PlanItPokerPublisher.TOPIC_STORY_CREATED);
     }
     
     // Subscribe to scoring events
-    public void subscribeToStoryScored(Consumer<PlanItPokerPublisher.ScoreEvent> callback) {
+    public void subscribeToStoryScored(Consumer<T1PlanItPokerPublisher.ScoreEvent> callback) {
         this.storyStoredHandler = callback;
-        subscribeToTopic(PlanItPokerPublisher.TOPIC_STORY_SCORED);
+        subscribeToTopic(T1PlanItPokerPublisher.TOPIC_STORY_SCORED);
     }
     
     // Subscribe to cards revealed events
-    public void subscribeToCardsRevealed(Consumer<PlanItPokerPublisher.RevealEvent> callback) {
+    public void subscribeToCardsRevealed(Consumer<T1PlanItPokerPublisher.RevealEvent> callback) {
         this.cardsRevealedHandler = callback;
-        subscribeToTopic(PlanItPokerPublisher.TOPIC_CARDS_REVEALED);
+        subscribeToTopic(T1PlanItPokerPublisher.TOPIC_CARDS_REVEALED);
     }
     
     // Subscribe to rooms updated events
-    public void subscribeToRoomsUpdated(Consumer<PlanItPokerPublisher.RoomsUpdatedEvent> callback) {
+    public void subscribeToRoomsUpdated(Consumer<T1PlanItPokerPublisher.RoomsUpdatedEvent> callback) {
         this.roomsUpdatedHandler = callback;
-        subscribeToTopic(PlanItPokerPublisher.TOPIC_ROOMS_UPDATED);
+        subscribeToTopic(T1PlanItPokerPublisher.TOPIC_ROOMS_UPDATED);
     }
     
     // Subscribe to mode changed events
-    public void subscribeToModeChanged(Consumer<PlanItPokerPublisher.ModeEvent> callback) {
+    public void subscribeToModeChanged(Consumer<T1PlanItPokerPublisher.ModeEvent> callback) {
         this.modeChangedHandler = callback;
-        subscribeToTopic(PlanItPokerPublisher.TOPIC_MODE_CHANGED);
+        subscribeToTopic(T1PlanItPokerPublisher.TOPIC_MODE_CHANGED);
     }
     
     // Subscribe to all events in current room
@@ -151,10 +151,10 @@ public class PlanItPokerSubscriber implements MqttCallback {
     
     // Helper methods for common operations
     public String createRoom(String roomName, String creatorName) {
-        PlanItPokerRepository repo = getRepository();
+        T1PlanItPokerRepository repo = getRepository();
         String roomCode = repo.createRoom(roomName, creatorName);
         
-        PlanItPokerPublisher publisher = PlanItPokerPublisher.getInstance();
+        T1PlanItPokerPublisher publisher = T1PlanItPokerPublisher.getInstance();
         publisher.publishRoomCreated(roomCode, roomName, creatorName);
         publisher.publishRoomsUpdated();
         
@@ -162,12 +162,12 @@ public class PlanItPokerSubscriber implements MqttCallback {
     }
     
     public boolean joinRoom(String roomCode, String playerName) {
-        PlanItPokerRepository repo = getRepository();
+        T1PlanItPokerRepository repo = getRepository();
         boolean success = repo.joinRoom(roomCode, playerName);
         if (success) {
             repo.setLoggedInUser(playerName);
             
-            PlanItPokerPublisher publisher = PlanItPokerPublisher.getInstance();
+            T1PlanItPokerPublisher publisher = T1PlanItPokerPublisher.getInstance();
             publisher.publishPlayerJoined(roomCode, playerName);
         }
         return success;
@@ -179,10 +179,10 @@ public class PlanItPokerSubscriber implements MqttCallback {
         String currentRoom = getCurrentRoomCode();
         String currentPlayer = getCurrentPlayerName();
         if (currentRoom != null && currentPlayer != null) {
-            PlanItPokerRepository repo = getRepository();
+            T1PlanItPokerRepository repo = getRepository();
             repo.updateStoryScore(currentRoom, storyId, currentPlayer, score);
             
-            PlanItPokerPublisher publisher = PlanItPokerPublisher.getInstance();
+            T1PlanItPokerPublisher publisher = T1PlanItPokerPublisher.getInstance();
             publisher.publishStoryScored(currentRoom, storyId, currentPlayer, score);
         }
     }
@@ -190,13 +190,13 @@ public class PlanItPokerSubscriber implements MqttCallback {
     public void revealCards(String storyId) {
         String currentRoom = getCurrentRoomCode();
         if (currentRoom != null) {
-            PlanItPokerRepository repo = getRepository();
+            T1PlanItPokerRepository repo = getRepository();
             repo.revealCards(currentRoom, storyId);
             
-            PlanItPokerRepository.Room room = repo.getRoom(currentRoom);
+            T1PlanItPokerRepository.Room room = repo.getRoom(currentRoom);
             T1Card story = room.getStory(storyId);
             
-            PlanItPokerPublisher publisher = PlanItPokerPublisher.getInstance();
+            T1PlanItPokerPublisher publisher = T1PlanItPokerPublisher.getInstance();
             publisher.publishCardsRevealed(currentRoom, storyId, story.getAverageScore());
         }
     }
@@ -204,10 +204,10 @@ public class PlanItPokerSubscriber implements MqttCallback {
     public void changeMode(String newMode) {
         String currentRoom = getCurrentRoomCode();
         if (currentRoom != null) {
-            PlanItPokerRepository repo = getRepository();
+            T1PlanItPokerRepository repo = getRepository();
             repo.setCurrentMode(newMode);
             
-            PlanItPokerPublisher publisher = PlanItPokerPublisher.getInstance();
+            T1PlanItPokerPublisher publisher = T1PlanItPokerPublisher.getInstance();
             publisher.publishModeChanged(currentRoom, newMode);
         }
     }
@@ -220,7 +220,7 @@ public class PlanItPokerSubscriber implements MqttCallback {
         return getRepository().getAvailableRoomCodes();
     }
     
-    public PlanItPokerRepository.Room getCurrentRoom() {
+    public T1PlanItPokerRepository.Room getCurrentRoom() {
         String currentRoomCode = getCurrentRoomCode();
         if (currentRoomCode != null) {
             return getRepository().getRoom(currentRoomCode);
@@ -229,7 +229,7 @@ public class PlanItPokerSubscriber implements MqttCallback {
     }
     
     public List<T1Card> getCurrentRoomStories() {
-        PlanItPokerRepository.Room room = getCurrentRoom();
+        T1PlanItPokerRepository.Room room = getCurrentRoom();
         if (room != null) {
             return room.getAllStories();
         }
@@ -251,16 +251,16 @@ public class PlanItPokerSubscriber implements MqttCallback {
         
         try {
             switch (topic) {
-                case PlanItPokerPublisher.TOPIC_ROOM_CREATED:
+                case T1PlanItPokerPublisher.TOPIC_ROOM_CREATED:
                     if (roomCreatedHandler != null) {
-                        PlanItPokerPublisher.RoomEvent roomEvent = gson.fromJson(messageStr, PlanItPokerPublisher.RoomEvent.class);
+                        T1PlanItPokerPublisher.RoomEvent roomEvent = gson.fromJson(messageStr, T1PlanItPokerPublisher.RoomEvent.class);
                         roomCreatedHandler.accept(roomEvent);
                     }
                     break;
                     
-                case PlanItPokerPublisher.TOPIC_PLAYER_JOINED:
+                case T1PlanItPokerPublisher.TOPIC_PLAYER_JOINED:
                     if (playerJoinedHandler != null) {
-                        PlanItPokerPublisher.PlayerEvent playerEvent = gson.fromJson(messageStr, PlanItPokerPublisher.PlayerEvent.class);
+                        T1PlanItPokerPublisher.PlayerEvent playerEvent = gson.fromJson(messageStr, T1PlanItPokerPublisher.PlayerEvent.class);
                         // Filter by current room
                         if (getCurrentRoomCode() == null || getCurrentRoomCode().equals(playerEvent.roomCode)) {
                             playerJoinedHandler.accept(playerEvent);
@@ -268,9 +268,9 @@ public class PlanItPokerSubscriber implements MqttCallback {
                     }
                     break;
                     
-                case PlanItPokerPublisher.TOPIC_STORY_CREATED:
+                case T1PlanItPokerPublisher.TOPIC_STORY_CREATED:
                     if (storyCreatedHandler != null) {
-                        PlanItPokerPublisher.StoryEvent storyEvent = gson.fromJson(messageStr, PlanItPokerPublisher.StoryEvent.class);
+                        T1PlanItPokerPublisher.StoryEvent storyEvent = gson.fromJson(messageStr, T1PlanItPokerPublisher.StoryEvent.class);
                         // Filter by current room
                         if (getCurrentRoomCode() == null || getCurrentRoomCode().equals(storyEvent.roomCode)) {
                             storyCreatedHandler.accept(storyEvent);
@@ -278,9 +278,9 @@ public class PlanItPokerSubscriber implements MqttCallback {
                     }
                     break;
                     
-                case PlanItPokerPublisher.TOPIC_STORY_SCORED:
+                case T1PlanItPokerPublisher.TOPIC_STORY_SCORED:
                     if (storyStoredHandler != null) {
-                        PlanItPokerPublisher.ScoreEvent scoreEvent = gson.fromJson(messageStr, PlanItPokerPublisher.ScoreEvent.class);
+                        T1PlanItPokerPublisher.ScoreEvent scoreEvent = gson.fromJson(messageStr, T1PlanItPokerPublisher.ScoreEvent.class);
                         // Filter by current room
                         if (getCurrentRoomCode() == null || getCurrentRoomCode().equals(scoreEvent.roomCode)) {
                             storyStoredHandler.accept(scoreEvent);
@@ -288,9 +288,9 @@ public class PlanItPokerSubscriber implements MqttCallback {
                     }
                     break;
                     
-                case PlanItPokerPublisher.TOPIC_CARDS_REVEALED:
+                case T1PlanItPokerPublisher.TOPIC_CARDS_REVEALED:
                     if (cardsRevealedHandler != null) {
-                        PlanItPokerPublisher.RevealEvent revealEvent = gson.fromJson(messageStr, PlanItPokerPublisher.RevealEvent.class);
+                        T1PlanItPokerPublisher.RevealEvent revealEvent = gson.fromJson(messageStr, T1PlanItPokerPublisher.RevealEvent.class);
                         // Filter by current room
                         if (getCurrentRoomCode() == null || getCurrentRoomCode().equals(revealEvent.roomCode)) {
                             cardsRevealedHandler.accept(revealEvent);
@@ -298,16 +298,16 @@ public class PlanItPokerSubscriber implements MqttCallback {
                     }
                     break;
                     
-                case PlanItPokerPublisher.TOPIC_ROOMS_UPDATED:
+                case T1PlanItPokerPublisher.TOPIC_ROOMS_UPDATED:
                     if (roomsUpdatedHandler != null) {
-                        PlanItPokerPublisher.RoomsUpdatedEvent roomsEvent = gson.fromJson(messageStr, PlanItPokerPublisher.RoomsUpdatedEvent.class);
+                        T1PlanItPokerPublisher.RoomsUpdatedEvent roomsEvent = gson.fromJson(messageStr, T1PlanItPokerPublisher.RoomsUpdatedEvent.class);
                         roomsUpdatedHandler.accept(roomsEvent);
                     }
                     break;
                     
-                case PlanItPokerPublisher.TOPIC_MODE_CHANGED:
+                case T1PlanItPokerPublisher.TOPIC_MODE_CHANGED:
                     if (modeChangedHandler != null) {
-                        PlanItPokerPublisher.ModeEvent modeEvent = gson.fromJson(messageStr, PlanItPokerPublisher.ModeEvent.class);
+                        T1PlanItPokerPublisher.ModeEvent modeEvent = gson.fromJson(messageStr, T1PlanItPokerPublisher.ModeEvent.class);
                         // Filter by current room
                         if (getCurrentRoomCode() == null || getCurrentRoomCode().equals(modeEvent.roomCode)) {
                             modeChangedHandler.accept(modeEvent);
@@ -340,10 +340,10 @@ public class PlanItPokerSubscriber implements MqttCallback {
     
     // Interface for handling room events
     public interface RoomEventHandler {
-        default void onPlayerJoined(PlanItPokerPublisher.PlayerEvent event) {}
-        default void onStoryCreated(PlanItPokerPublisher.StoryEvent event) {}
-        default void onStoryScored(PlanItPokerPublisher.ScoreEvent event) {}
-        default void onCardsRevealed(PlanItPokerPublisher.RevealEvent event) {}
-        default void onModeChanged(PlanItPokerPublisher.ModeEvent event) {}
+        default void onPlayerJoined(T1PlanItPokerPublisher.PlayerEvent event) {}
+        default void onStoryCreated(T1PlanItPokerPublisher.StoryEvent event) {}
+        default void onStoryScored(T1PlanItPokerPublisher.ScoreEvent event) {}
+        default void onCardsRevealed(T1PlanItPokerPublisher.RevealEvent event) {}
+        default void onModeChanged(T1PlanItPokerPublisher.ModeEvent event) {}
     }
 }

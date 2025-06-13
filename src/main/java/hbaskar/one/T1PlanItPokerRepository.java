@@ -17,8 +17,8 @@ import hbaskar.T1Card;
  * @version 1.1
  * @since 2025
  */
-public class PlanItPokerRepository {
-    private static PlanItPokerRepository instance;
+public class T1PlanItPokerRepository {
+    private static T1PlanItPokerRepository instance;
 
     private final Map<String, Room> rooms;
     private final AtomicInteger roomCounter;
@@ -35,15 +35,15 @@ public class PlanItPokerRepository {
     private String taigaAuthToken;
     private int taigaProjectId;
 
-    private PlanItPokerRepository() {
+    private T1PlanItPokerRepository() {
         this.rooms = new ConcurrentHashMap<>();
         this.roomCounter = new AtomicInteger(1);
         this.storyCounter = new AtomicInteger(1);
     }
 
-    public static synchronized PlanItPokerRepository getInstance() {
+    public static synchronized T1PlanItPokerRepository getInstance() {
         if (instance == null) {
-            instance = new PlanItPokerRepository();
+            instance = new T1PlanItPokerRepository();
         }
         return instance;
     }

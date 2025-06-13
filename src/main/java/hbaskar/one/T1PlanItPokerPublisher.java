@@ -24,10 +24,10 @@ import org.slf4j.LoggerFactory;
  * @since 2025
  */
 
-public class PlanItPokerPublisher {
-    private static final Logger logger = LoggerFactory.getLogger(PlanItPokerPublisher.class);
+public class T1PlanItPokerPublisher {
+    private static final Logger logger = LoggerFactory.getLogger(T1PlanItPokerPublisher.class);
 
-    private static PlanItPokerPublisher instance;
+    private static T1PlanItPokerPublisher instance;
     private MqttClient mqttClient;
     private final Gson gson;
     private final String broker = "tcp://test.mosquitto.org:1883"; // Change to your MQTT broker
@@ -42,15 +42,15 @@ public class PlanItPokerPublisher {
     public static final String TOPIC_ROOMS_UPDATED = "planit/rooms/updated";
     public static final String TOPIC_MODE_CHANGED = "planit/mode/changed";
     
-    private PlanItPokerPublisher() {
+    private T1PlanItPokerPublisher() {
         this.gson = new Gson();
         this.clientId = "Publisher_" + UUID.randomUUID().toString();
         connectToBroker();
     }
     
-    public static synchronized PlanItPokerPublisher getInstance() {
+    public static synchronized T1PlanItPokerPublisher getInstance() {
         if (instance == null) {
-            instance = new PlanItPokerPublisher();
+            instance = new T1PlanItPokerPublisher();
         }
         return instance;
     }
@@ -123,7 +123,7 @@ public class PlanItPokerPublisher {
     
     // Publish rooms updated event
     public void publishRoomsUpdated() {
-        PlanItPokerRepository repo = PlanItPokerRepository.getInstance();
+        T1PlanItPokerRepository repo = T1PlanItPokerRepository.getInstance();
         RoomsUpdatedEvent event = new RoomsUpdatedEvent(repo.getAvailableRoomCodes());
         publishMessage(TOPIC_ROOMS_UPDATED, event);
     }
