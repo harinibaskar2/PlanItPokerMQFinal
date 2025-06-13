@@ -1,16 +1,14 @@
 <configuration>
-<import class = "ch.qos.logback.classic.encoder.PatternLayoutEncoder"/>
-<import class = "ch.qos.logback.core.ConsoleAppender"/>
+    <import class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"/>
+    <import class="ch.qos.logback.core.ConsoleAppender"/>
 
-<appender name="CONSOLE_TEXT" class="ConsoleAppender">
-        <encoder>
-            <pattern>
-                %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
-            </pattern>
+    <appender name="CONSOLE_TEXT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <root level = "ALL"/>
-    <appender-ref ref = "CONSILE_TEXT"/>
+    <root level="ALL">
+        <appender-ref ref="CONSOLE_TEXT"/>
     </root>
-    </configuration>
+</configuration>
