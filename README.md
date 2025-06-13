@@ -6,7 +6,7 @@ PlanITPoker allows team members to:
 
 
 
-## 👥 Create and join rooms -  hbaskar
+## 👥 Create and join rooms/Tagia Story Fetcher importing stories  -  hbaskar
 T1CreateRoomPanel 
 T1CreateRoomNanny 
 T1JoinRoomNanny 
@@ -34,7 +34,6 @@ T1DashboardPanel
 T1CardsPanel
 T1StoriesPanel
 T1StoriesNanny
-T1StoriesPanel
 T1Card
 logback.xml
 pom.xml(loggerdependencies)
