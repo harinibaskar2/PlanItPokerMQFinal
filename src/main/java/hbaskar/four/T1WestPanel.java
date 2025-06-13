@@ -7,15 +7,17 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
+import hbaskar.T1Card;
 import hbaskar.one.PlanItPokerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 /**
  * Represents the left-side control panel of the PlanItPoker dashboard UI.
@@ -26,14 +28,12 @@ import org.slf4j.LoggerFactory;
  *   Viewing and refreshing the list of players
  *   Inviting teammates to a selected room
  *   Creating stories within the current room
-
- *
+ *   Displaying stories chart with averages
 
  *
  * @author hbaskar
- * @version 1.0
+ * @version 1.1
  */
-
 public class T1WestPanel extends JPanel {
     private static final Logger logger = LoggerFactory.getLogger(T1WestPanel.class);
 
@@ -54,6 +54,9 @@ public class T1WestPanel extends JPanel {
     // Only storyTitleField now
     private JTextField storyTitleField;
     private JButton createStoryButton;
+    
+    // Chart button
+    private JButton showChartButton;
 
     public T1WestPanel(T1DashboardNanny dashboardNanny, String username) {
         this.dashboardNanny = dashboardNanny;
@@ -117,6 +120,14 @@ public class T1WestPanel extends JPanel {
         createStoryButton = new JButton("Create Story");
         add(createStoryButton);
 
+        // --- Stories Chart UI ---
+        add(new JLabel(" ")); // spacer
+        add(new JLabel("Story Analytics:"));
+        
+        showChartButton = new JButton("Show Stories Chart");
+        showChartButton.setToolTipText("Display chart of all stories with their average scores");
+        add(showChartButton);
+
         // Listeners
 
         roomSelector.addActionListener(e -> {
@@ -177,8 +188,39 @@ public class T1WestPanel extends JPanel {
             }
 
             // Assuming createStory now only takes room and title (without description)
-
         });
+
+        // Chart button listener
+        showChartButton.addActionListener(e -> showStoriesChart());
+    }
+
+    private void showStoriesChart() {
+        String currentRoom = repository.getCurrentRoomCode();
+        if (currentRoom == null || currentRoom.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please select a room first.", "No Room Selected", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        PlanItPokerRepository.Room room = repository.getRoom(currentRoom);
+        if (room == null) {
+            JOptionPane.showMessageDialog(this, "Room not found.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        List<T1Card> stories = room.getAllStories();
+        if (stories.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No stories found in this room.", "No Stories", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Calculate averages for all stories
+        for (T1Card story : stories) {
+            story.calculateAverageScore();
+        }
+
+        // Show the chart dialog
+        T1StoriesChartDialog chartDialog = new T1StoriesChartDialog((JFrame) SwingUtilities.getWindowAncestor(this), stories);
+        chartDialog.setVisible(true);
     }
 
     private void updateRoomSelector(String newRoom) {
@@ -212,4 +254,3 @@ public class T1WestPanel extends JPanel {
         refreshPlayerList();
     }
 }
-

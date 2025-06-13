@@ -26,7 +26,6 @@ public class T1DashboardNanny {
         this.main = main;
     }
 
-
     public void setT1StoriesPanel(T1StoriesPanel T1StoriesPanel) {
         this.T1StoriesPanel = T1StoriesPanel;
     }
@@ -38,24 +37,28 @@ public class T1DashboardNanny {
         }
     }
 
-   
-	// This is the part that I wrote, everything above is a different member's work
-	public static void onSizePress(String id ,String value){
+    // This is the part that I wrote, everything above is a different member's work
+    public static void onSizePress(String id, String value) {
         int score;
-        if (value == "?"){
-            score =0;
-        } else if (value == "½"){
-            score =0;
-        }
-        else{
+        if (value.equals("?")) {
+            score = 0;
+        } else if (value.equals("½")) {
+            score = 0;
+        } else {
             score = Integer.parseInt(value);
         }
-         String currentRoomCode = PlanItPokerRepository.getInstance().getCurrentRoomCode();
-
+        
+        String currentRoomCode = PlanItPokerRepository.getInstance().getCurrentRoomCode();
         Room room = PlanItPokerRepository.getInstance().getRoom(currentRoomCode);
         List<T1Card> stories = room.getAllStories();
-        T1Card story=room.getStory(id);
-        story.addScore("guest", score);
-		logger.info("This is assigned to the current story" + value);
-	}
+        T1Card story = room.getStory(id);
+        
+        if (story != null) {
+            story.addScore("guest", score);
+            story.calculateAverageScore(); // Calculate average after adding score
+            logger.info("This is assigned to the current story: " + value + " for story: " + story.getTitle());
+        } else {
+            logger.warn("Story not found with id: " + id);
+        }
+    }
 }

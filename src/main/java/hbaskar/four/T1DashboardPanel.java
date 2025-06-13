@@ -11,22 +11,26 @@ import hbaskar.three.T1StoriesNanny;
  * Integrates a dashboard with the cards, timer, and stories.
  *
  * @author Darien
+ * ver 1.1 - Added component connections for story scoring
  */
 public class T1DashboardPanel extends JPanel {
     private T1StoriesNanny storiesNanny;
 
     public T1DashboardPanel(T1DashboardNanny dashboardNanny) {
-
         setLayout(new BorderLayout());
 
-        T1StoriesPanel T1StoriesPanel = new T1StoriesPanel(storiesNanny);
-        dashboardNanny.setT1StoriesPanel(T1StoriesPanel);
+        // Create stories panel
+        T1StoriesPanel storiesPanel = new T1StoriesPanel(storiesNanny);
+        dashboardNanny.setT1StoriesPanel(storiesPanel);
 
-        // Get the latest player from PlanItPokerRepository current room, for example:
+        // Create cards panel and connect it to stories panel
+        CardsPanel cardsPanel = new CardsPanel();
+        cardsPanel.setStoriesPanel(storiesPanel);
+
+        // Get the latest player from PlanItPokerRepository current room
         String currentRoomCode = PlanItPokerRepository.getInstance().getCurrentRoomCode();
         String username = null;
         if (currentRoomCode != null) {
-            // Just get the first player in the current room for demo purposes
             var room = PlanItPokerRepository.getInstance().getRoom(currentRoomCode);
             if (room != null && !room.getPlayers().isEmpty()) {
                 username = room.getPlayers().get(0);
@@ -38,9 +42,9 @@ public class T1DashboardPanel extends JPanel {
 
         T1WestPanel westPanel = new T1WestPanel(dashboardNanny, username);
 
-        add(new CardsPanel(), BorderLayout.CENTER);
-        add(T1StoriesPanel, BorderLayout.SOUTH);
+        // Add components to layout
+        add(cardsPanel, BorderLayout.CENTER);
+        add(storiesPanel, BorderLayout.SOUTH);
         add(westPanel, BorderLayout.EAST);
     }
 }
-
