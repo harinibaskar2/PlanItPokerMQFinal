@@ -17,8 +17,6 @@ public class Main extends JFrame {
     T1LoginNanny loginNanny = new T1LoginNanny(this);
     T1LoginPanel loginPanel = new T1LoginPanel(loginNanny);
     add(loginPanel);
-    T1StoriesNanny storiesNanny = new T1StoriesNanny(this);
-    T1TaigaPanel storiesPanel = new T1TaigaPanel(storiesNanny);
 }
 
 public static void main(String[] args) {

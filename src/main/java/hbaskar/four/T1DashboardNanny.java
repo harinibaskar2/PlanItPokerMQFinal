@@ -30,18 +30,7 @@ public class T1DashboardNanny {
         }
     }
 
-    private String fetchStoriesForRoom(String room) {
-        switch (room) {
-            case "Room 1":
-                return "Story 1\nStory 2";
-            case "Room 2":
-                return "Story A\nStory B";
-            case "Room 3":
-                return "Story X\nStory Y";
-            default:
-                return "";
-        }
-    }
+   
 	// This is the part that I wrote, everything above is a different member's work
 	public static void onSizePress(String value){
 		System.out.println("This is assigned to the current story" + value);
