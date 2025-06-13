@@ -1,14 +1,16 @@
+<configuration>
+<import class = "ch.qos.logback.classic.encoder.PatternLayourEncoder"/>
+<import class = "ch.qos.logback.core.ConsoleAppender"/>
 
+<appender name="CONSOLE_TEXT" class="ConsoleAppender">
+        <encoder>
+            <pattern>
+                %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
 
-// 
-public class SampleFile {
-    public static void main(String[] args) {
-        System.out.println("Hello, world!");
-
-        // Example: print all command line arguments
-        System.out.println("You passed these arguments:");
-        for (String arg : args) {
-            System.out.println(arg);
-        }
-    }
-}
+    <root level = "ALL"/>
+    <appender-ref ref = "CONSILE_TEXT"/>
+    </root>
+    </configuration>
