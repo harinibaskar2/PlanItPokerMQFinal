@@ -24,19 +24,20 @@ import hbaskar.three.T1StoriesNanny;
 
 public class T1StoriesPanel extends JPanel {
     private static JPanel storyCardsPanel;
-
-    public T1StoriesPanel(T1StoriesNanny t1StoriesNanny) {
-        setLayout(new BorderLayout());
-
-        storyCardsPanel = new JPanel();
-        storyCardsPanel.setLayout(new GridLayout(2, 5, 10, 10)); // 2 rows x 5 columns
-        add(storyCardsPanel, BorderLayout.CENTER);
-
-        updateActiveStories();
-    }
-
-    public void updateActiveStories() {
-        storyCardsPanel.removeAll();
+    public Object storyTextArea;
+    
+        public T1StoriesPanel(T1StoriesNanny t1StoriesNanny) {
+            setLayout(new BorderLayout());
+    
+            storyCardsPanel = new JPanel();
+            storyCardsPanel.setLayout(new GridLayout(2, 5, 10, 10)); // 2 rows x 5 columns
+            add(storyCardsPanel, BorderLayout.CENTER);
+    
+            updateActiveStories();
+        }
+    
+        public void updateActiveStories() {
+            storyCardsPanel.removeAll();
 
         String currentRoomCode = PlanItPokerRepository.getInstance().getCurrentRoomCode();
         if (currentRoomCode == null) return;
