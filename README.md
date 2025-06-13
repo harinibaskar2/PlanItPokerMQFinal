@@ -14,6 +14,11 @@ T1RoomPanel.java
 T1ScheduleRoomPanel.java 
 T1WestPanel.java
 T1LoginNanny.java 
+T1TaigaStoryFetcher.java
+T1TaigaLoginPanel.java
+T1TaigaPanel.java
+
+
 
 
 Cards and Updates-Darien Rodrigo
