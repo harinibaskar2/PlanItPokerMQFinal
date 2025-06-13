@@ -11,10 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Panel that displays the cards used for estimating.
- *
+ * Panel that displays cards used for story point estimation.
+ * Each card is a button with a predefined value that users can click to submit their estimate.
+ * 
  * @author DarienR
- * ver 1.1
+ * @version 1.1
  */
 public class CardsPanel extends JPanel {
 	private static final Logger logger = LoggerFactory.getLogger(CardsPanel.class);

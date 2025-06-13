@@ -8,8 +8,12 @@ import hbaskar.one.PlanItPokerRepository;
 import hbaskar.three.T1StoriesNanny;
 
 /**
- * Integrates a dashboard with the cards, timer, and stories.
- *
+ * The main dashboard panel that integrates the cards panel, timer, and stories panel.
+ * 
+ * This panel uses T1StoriesNanny for story management and initializes
+ * sub-panels for stories, cards, and controls for the selected user and room.
+ * 
+ * 
  * @author Darien
  */
 public class T1DashboardPanel extends JPanel {

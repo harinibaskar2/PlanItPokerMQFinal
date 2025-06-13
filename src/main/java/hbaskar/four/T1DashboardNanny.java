@@ -9,12 +9,18 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/*
- * Watcher for the stories panel for it to catch all the stories and move around as well as update the stories
+/**
+ * Manages and coordinates interactions within the PlanItPoker dashboard,
+ * particularly handling updates and events related to the stories panel.
  * 
- * author @DarienR5
+ * This class listens for room selection changes, updates the stories displayed,
+ * and processes user actions such as scoring story cards.</p>
+ * 
+ * It interacts with {@link T1StoriesPanel} to refresh UI elements and uses
+ * {@link PlanItPokerRepository} to access and modify story data for the current room.</p>
  * 
  * 
+ * @author DarienR5
  */
 public class T1DashboardNanny {
     private static final Logger logger = LoggerFactory.getLogger(T1DashboardNanny.class);

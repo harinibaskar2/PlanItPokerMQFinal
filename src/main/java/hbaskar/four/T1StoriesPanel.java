@@ -17,11 +17,14 @@ import hbaskar.three.T1StoriesNanny;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/*
- * This Panel Shows all the stories and turns them into buttons for the user to vote on the sizes of the stories.
- * Over the course, it updates the active stories to do this
+/**
+ * Panel displaying all active stories as buttons for users to vote on story sizes.
+ * <p>
+ * The panel dynamically updates to show the current active stories in the
+ * selected room and provides UI controls for story interaction.
+ * </p>
  * 
- * @Darien
+ * @author DarienR5
  */
 
 public class T1StoriesPanel extends JPanel {
