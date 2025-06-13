@@ -6,7 +6,7 @@ PlanITPoker allows team members to:
 
 
 
-👥 Create and join rooms - Harini Baskar 
+👥 Create and join rooms -  hbaskar
 T1CreateRoomPanel 
 T1CreateRoomNanny 
 T1JoinRoomNanny 
